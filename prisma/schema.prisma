@@ -1,0 +1,205 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model SuperAdmin {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  email      String    @unique
+  password   String
+  role       Roles     @default(SUPERADMIN)
+  isVerified DateTime?
+  schools    School[]
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model School {
+  id              String     @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  email           String     @unique
+  targetLine      String
+  image           String?
+  contact         String
+  website         String?
+  address         String
+  country         String
+  lastPaymentDate String?
+  isActive        Boolean    @default(false)
+  username        String     @unique
+  password        String
+  payments        Payment[]
+  classes         Class[]
+  teachers        Teacher[]
+  superAdmin      SuperAdmin @relation(fields: [superAdminId], references: [id], onDelete: Cascade)
+  superAdminId    String     @db.ObjectId
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  @@map("schools")
+}
+
+model Payment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  amount    Float
+  school    School   @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  schoolId  String   @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("payments")
+}
+
+model Teacher {
+  id           String              @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  contact      String
+  image        String?
+  joiningDate  String
+  salary       Float
+  guardienName String
+  gender       String
+  experience   String?
+  cnic         String              @unique
+  religion     String?
+  email        String?
+  education    String
+  bloodGroup   String?
+  dateOfBirth  String
+  address      String?
+  username     String              @unique
+  password     String
+  subjects     Subject[]
+  school       School              @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  schoolId     String              @db.ObjectId
+  attendance   TeacherAttendance[]
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+
+  @@map("teachers")
+}
+
+model Class {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  school    School    @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  schoolId  String    @db.ObjectId
+  sections  Section[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("classes")
+}
+
+model Section {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  monthlyFee Float
+  subjects   Subject[]
+  students   Student[]
+  class      Class     @relation(fields: [classId], references: [id], onDelete: Cascade)
+  classId    String    @db.ObjectId
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@map("sections")
+}
+
+model Subject {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  teacher   Teacher  @relation(fields: [teacherId], references: [id])
+  teacherId String   @db.ObjectId
+  section   Section  @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  sectionId String   @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("subjects")
+}
+
+model Student {
+  id             String              @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  regNumber      String              @unique
+  image          String?
+  admissionDate  String
+  feeDiscount    Float?
+  contact        String
+  dateOfBirth    String
+  cnic           String
+  gender         String
+  previousSchool String?
+  religion       String?
+  bloodGroup     String?
+  address        String
+  username       String              @unique
+  password       String
+  guardien       Guardien            @relation(fields: [guardienId], references: [id])
+  guardienId     String              @db.ObjectId
+  section        Section             @relation(fields: [sectionId], references: [id])
+  sectionId      String              @db.ObjectId
+  attendance     StudentAttendance[]
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+
+  @@map("students")
+}
+
+model Guardien {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  cnic       String
+  occupation String?
+  education  String?
+  contact    String
+  profession String?
+  income     Float?
+  students   Student[]
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@map("guardiens")
+}
+
+model StudentAttendance {
+  id        String           @id @default(auto()) @map("_id") @db.ObjectId
+  date      String
+  status    AttendanceStatus
+  student   Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  studentId String           @db.ObjectId
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  @@map("studentAttendance")
+}
+
+model TeacherAttendance {
+  id        String           @id @default(auto()) @map("_id") @db.ObjectId
+  date      String
+  status    AttendanceStatus
+  teacher   Teacher          @relation(fields: [teacherId], references: [id])
+  teacherId String           @db.ObjectId
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  @@map("teacherAttendance")
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LEAVE
+}
+
+enum Roles {
+  SUPERADMIN
+  ADMIN
+  TEACHER
+  STUDENT
+}
