@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 import { isRedirectError } from "next/dist/client/components/redirect";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import bcrypt from "bcryptjs";
 
 export async function login(values: LoginSchema) {
   try {
@@ -21,7 +22,10 @@ export async function login(values: LoginSchema) {
       if (!existingUser) {
         return { error: "Invalid username or password" };
       }
-      const passwordMatch = validData.data.password === existingUser.password;
+      const passwordMatch = await bcrypt.compare(
+        validData.data.password,
+        existingUser.password
+      );
       if (!passwordMatch) {
         return { error: "Invalid username of password" };
       }

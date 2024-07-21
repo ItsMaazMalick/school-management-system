@@ -72,16 +72,11 @@ export const adminNavlinks: NavLink[] = [
         url: "/admin/dashboard/bank-details",
         icon: <Landmark size={18} />,
       },
-      {
-        name: "Rules & Regulations",
-        url: "/admin/dashboard/rules",
-        icon: <Scale size={18} />,
-      },
-      {
-        name: "Marks Grading",
-        url: "/admin/dashboard/grading",
-        icon: <CandlestickChart size={18} />,
-      },
+      // {
+      //   name: "Marks Grading",
+      //   url: "/admin/dashboard/grading",
+      //   icon: <CandlestickChart size={18} />,
+      // },
       {
         name: "Account Setting",
         url: "/admin/dashboard/account-setting",

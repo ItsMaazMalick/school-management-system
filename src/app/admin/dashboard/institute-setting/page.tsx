@@ -1,6 +1,8 @@
 import { getSchoolUsingSession } from "@/actions/school";
 import { redirect } from "next/navigation";
 import { UpdateSchoolForm } from "./UpdateSchoolForm";
+import { RouteTitle } from "@/components/RouteTitle";
+import { LayoutDashboard } from "lucide-react";
 
 export default async function InstituteSetting() {
   const school = await getSchoolUsingSession();
@@ -9,6 +11,11 @@ export default async function InstituteSetting() {
   }
   return (
     <div>
+      <RouteTitle
+        route="Dashboard"
+        subRoute="Institute Profile"
+        icon={<LayoutDashboard size={20} />}
+      />
       <UpdateSchoolForm school={school} />
     </div>
   );

@@ -3,6 +3,8 @@
 import { cookies } from "next/headers";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import prisma from "@/lib/db";
+import { redirect } from "next/navigation";
+import { isRedirectError } from "next/dist/client/components/redirect";
 
 export async function getSession(role: string) {
   try {
@@ -14,25 +16,25 @@ export async function getSession(role: string) {
     }[role];
 
     if (!sessionKey) {
-      return null;
+      return redirect("/login");
     }
 
     const tokenValue = cookies().get(sessionKey)?.value;
 
     if (!tokenValue) {
-      return null;
+      return redirect("/login");
     }
 
     const decodedToken = jwt.decode(tokenValue);
 
     if (!decodedToken || typeof decodedToken === "string") {
-      return null;
+      return redirect("/login");
     }
 
     const { id, email } = decodedToken as JwtPayload;
 
-    if (!id) {
-      return null;
+    if (!id || !email) {
+      return redirect("/login");
     }
 
     if (role === "ADMIN") {
@@ -40,10 +42,10 @@ export async function getSession(role: string) {
         where: { id },
       });
       if (!existingAdmin || existingAdmin.email !== email) {
-        return null;
+        return redirect("/login");
       }
       if (!existingAdmin.isActive) {
-        return null;
+        return redirect("/login");
       }
       return {
         success: true,
@@ -61,7 +63,8 @@ export async function getSession(role: string) {
 
     return { id, role };
   } catch (error) {
+    if (isRedirectError(error)) throw error;
     console.error("Error in getSession:", error);
-    return null;
+    return redirect("/login");
   }
 }

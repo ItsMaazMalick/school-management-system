@@ -8,9 +8,11 @@ import { Fragment } from "react";
 export function Sidebar({
   role,
   className,
+  onClose,
 }: {
   role: string;
   className?: string;
+  onClose?: () => void;
 }) {
   const pathname = usePathname();
 
@@ -30,6 +32,7 @@ export function Sidebar({
                   ? "bg-primary-foreground text-primary"
                   : "text-primary-foreground"
               } p-1 rounded-md hover:bg-primary-foreground hover:text-primary transition-all duration-300 ml-4 flex text-sm`}
+              onClick={onClose}
             >
               <span className="mr-2">{option.icon}</span>
               {option.name}
@@ -47,6 +50,7 @@ export function Sidebar({
               ? "bg-primary-foreground"
               : "bg-primary-foreground/60"
           } p-1 rounded-md my-2 hover:bg-primary-foreground transition-all duration-300 flex`}
+          onClick={onClose}
         >
           <span className="mr-2">{link.icon}</span>
           {link.name}

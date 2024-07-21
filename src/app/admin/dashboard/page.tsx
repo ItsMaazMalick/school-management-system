@@ -39,7 +39,7 @@ export default async function AdminDashboard() {
             Notifications
           </p>
           <div className="h-[90%] custom-scroll">
-            <div className="flex flex-col gap-2 my-2">
+            <div className="flex flex-col gap-2 my-2 text-xs">
               <p className="py-1 px-2 rounded-full bg-primary text-primary-foreground w-fit">
                 16 Jan, 2024
               </p>
@@ -49,7 +49,7 @@ export default async function AdminDashboard() {
               </p>
               <p className="w-full h-[1px] bg-primary" />
             </div>
-            <div className="flex flex-col gap-2 my-2">
+            <div className="flex flex-col gap-2 my-2 text-xs">
               <p className="py-1 px-2 rounded-full bg-primary text-primary-foreground w-fit">
                 16 Jan, 2024
               </p>
@@ -59,7 +59,7 @@ export default async function AdminDashboard() {
               </p>
               <p className="w-full h-[1px] bg-primary" />
             </div>
-            <div className="flex flex-col gap-2 my-2">
+            <div className="flex flex-col gap-2 my-2 text-xs">
               <p className="py-1 px-2 rounded-full bg-primary text-primary-foreground w-fit">
                 16 Jan, 2024
               </p>
@@ -69,7 +69,7 @@ export default async function AdminDashboard() {
               </p>
               <p className="w-full h-[1px] bg-primary" />
             </div>
-            <div className="flex flex-col gap-2 my-2">
+            <div className="flex flex-col gap-2 my-2 text-xs">
               <p className="py-1 px-2 rounded-full bg-primary text-primary-foreground w-fit">
                 16 Jan, 2024
               </p>
@@ -79,7 +79,7 @@ export default async function AdminDashboard() {
               </p>
               <p className="w-full h-[1px] bg-primary" />
             </div>
-            <div className="flex flex-col gap-2 my-2">
+            <div className="flex flex-col gap-2 my-2 text-xs">
               <p className="py-1 px-2 rounded-full bg-primary text-primary-foreground w-fit">
                 16 Jan, 2024
               </p>
@@ -89,7 +89,27 @@ export default async function AdminDashboard() {
               </p>
               <p className="w-full h-[1px] bg-primary" />
             </div>
-            <div className="flex flex-col gap-2 my-2">
+            <div className="flex flex-col gap-2 my-2 text-xs">
+              <p className="py-1 px-2 rounded-full bg-primary text-primary-foreground w-fit">
+                16 Jan, 2024
+              </p>
+              <p className="font-semibold">
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum,
+                dignissimos?
+              </p>
+              <p className="w-full h-[1px] bg-primary" />
+            </div>
+            <div className="flex flex-col gap-2 my-2 text-xs">
+              <p className="py-1 px-2 rounded-full bg-primary text-primary-foreground w-fit">
+                16 Jan, 2024
+              </p>
+              <p className="font-semibold">
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum,
+                dignissimos?
+              </p>
+              <p className="w-full h-[1px] bg-primary" />
+            </div>
+            <div className="flex flex-col gap-2 my-2 text-xs">
               <p className="py-1 px-2 rounded-full bg-primary text-primary-foreground w-fit">
                 16 Jan, 2024
               </p>

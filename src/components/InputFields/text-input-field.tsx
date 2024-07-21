@@ -14,7 +14,7 @@ type TextInputProps = {
   control: any;
   name: string;
   type?: string;
-  placeholder: string;
+  placeholder?: string;
   description?: string;
   required?: boolean;
   autoFocus?: boolean;

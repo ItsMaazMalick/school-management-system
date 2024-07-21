@@ -12,3 +12,10 @@ export const addSchoolSchema = z.object({
 });
 
 export type AddSchoolSchema = z.infer<typeof addSchoolSchema>;
+
+export const updateSchoolUserSchema = z.object({
+  username: requiredString,
+  password: optionalString,
+});
+
+export type UpdateSchoolUserSchema = z.infer<typeof updateSchoolUserSchema>;
