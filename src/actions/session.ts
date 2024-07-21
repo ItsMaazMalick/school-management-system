@@ -42,12 +42,16 @@ export async function getSession(role: string) {
       if (!existingAdmin || existingAdmin.email !== email) {
         return null;
       }
+      if (!existingAdmin.isActive) {
+        return null;
+      }
       return {
         success: true,
         data: {
           id: existingAdmin.id,
           name: existingAdmin.name,
           email: existingAdmin.email,
+          image: existingAdmin.image,
           role: role,
         },
       };

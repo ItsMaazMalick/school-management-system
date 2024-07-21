@@ -38,13 +38,18 @@ export function TextInputField({
         <FormItem>
           <FormLabel>
             {label}
+            {!required && " (Optional)"}
             {required && <RequiredTag />}
           </FormLabel>
           <FormControl>
             <Input
               autoFocus={autoFocus}
               type={type ? type : "text"}
-              placeholder={placeholder}
+              placeholder={
+                required
+                  ? placeholder || label
+                  : `${placeholder || label} (Optional)`
+              }
               {...field}
             />
           </FormControl>

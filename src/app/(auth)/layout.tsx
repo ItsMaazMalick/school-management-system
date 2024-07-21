@@ -1,4 +1,4 @@
-import { getSession } from "@/actions.ts/session";
+import { getSession } from "@/actions/session";
 
 export default async function AuthLayout({
   children,

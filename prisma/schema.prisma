@@ -72,6 +72,7 @@ model Teacher {
   bloodGroup   String?
   dateOfBirth  String
   address      String?
+  isActive     Boolean             @default(true)
   username     String              @unique
   password     String
   subjects     Subject[]
@@ -138,6 +139,7 @@ model Student {
   religion       String?
   bloodGroup     String?
   address        String
+  isActive       Boolean             @default(true)
   username       String              @unique
   password       String
   guardien       Guardien            @relation(fields: [guardienId], references: [id])

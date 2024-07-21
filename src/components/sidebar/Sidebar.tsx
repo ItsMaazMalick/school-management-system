@@ -25,8 +25,10 @@ export function Sidebar({
             <Link
               key={idx}
               href={option.url}
-              className={`block text-primary-foreground ${
-                pathname === option.url ? "bg-primary-foreground" : ""
+              className={`block text-primary ${
+                pathname === option.url
+                  ? "bg-primary-foreground text-primary"
+                  : "text-primary-foreground"
               } p-1 rounded-md hover:bg-primary-foreground hover:text-primary transition-all duration-300 ml-4 flex text-sm`}
             >
               <span className="mr-2">{option.icon}</span>

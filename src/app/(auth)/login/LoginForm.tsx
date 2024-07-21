@@ -1,15 +1,14 @@
 "use client";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Form } from "@/components/ui/form";
-import { loginSchema, LoginSchema } from "@/lib/schemas/login-schema";
+import { PasswordInputField } from "@/components/InputFields/password-input-field";
 import SelectField from "@/components/InputFields/select-field";
 import { TextInputField } from "@/components/InputFields/text-input-field";
-import { PasswordInputField } from "@/components/InputFields/password-input-field";
 import LoadingButton from "@/components/buttons/loading-button";
 import { FormError } from "@/components/form-error";
+import { Form } from "@/components/ui/form";
+import { loginSchema, LoginSchema } from "@/lib/schemas/login-schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
 import { login } from "./action";
 
 export function LoginForm() {
@@ -33,9 +32,6 @@ export function LoginForm() {
       }
     });
     form.reset();
-    setTimeout(() => {
-      setError(undefined);
-    }, 3000);
   }
 
   return (

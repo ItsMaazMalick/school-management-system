@@ -25,10 +25,14 @@ export async function login(values: LoginSchema) {
       if (!passwordMatch) {
         return { error: "Invalid username of password" };
       }
+      if (!existingUser.isActive) {
+        return { error: "Please wait your request is pending" };
+      }
       const tokenData = {
         id: existingUser.id,
         name: existingUser.name,
         email: existingUser.email,
+        image: existingUser.image,
       };
       const token = jwt.sign(tokenData, process.env.TOKEN_SECRET!);
       cookies().set("admin-session-token", token, {
