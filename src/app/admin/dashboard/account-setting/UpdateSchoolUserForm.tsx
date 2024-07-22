@@ -52,7 +52,6 @@ export function UpdateSchoolUserForm({ school }: { school: any }) {
               label="Username"
               name="username"
               control={form.control}
-              autoFocus
               required
             />
             <PasswordInputField

@@ -21,7 +21,7 @@ export default async function AdminDashboardLayout({
           className="hidden lg:block lg:w-[250px] bg-primary h-[calc(100dvh-60px)] sticky top-[60px]"
           role={session.data.role}
         />
-        <div className="w-full p-2 pr-5">{children}</div>
+        <div className="w-full p-2 lg:pr-5">{children}</div>
       </div>
     </>
   );

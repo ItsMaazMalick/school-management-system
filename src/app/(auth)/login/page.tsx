@@ -14,8 +14,10 @@ export default function LoginPage() {
         />
       </div>
       <div className="w-full lg:w-1/2 h-full flex flex-col items-center justify-center p-4">
-        <p className="text-4xl font-bold text-primary">Best School System</p>
-        <p className="font-semibold text-primary my-4">
+        <p className="text-4xl font-bold text-primary text-center">
+          Best School System
+        </p>
+        <p className="font-semibold text-primary my-4 text-center">
           Provide details below to login
         </p>
         <LoginForm />

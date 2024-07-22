@@ -78,7 +78,7 @@ function MobileMenu({
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
-        <Button variant="outline" className="text-primary">
+        <Button variant="outline" className="text-primary p-2">
           <Menu />
         </Button>
       </SheetTrigger>

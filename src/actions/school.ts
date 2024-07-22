@@ -90,3 +90,31 @@ export async function updateSchool(
     return { error: "Something went wrong" };
   }
 }
+
+export async function getTransactionsForSchoolUsingSession() {
+  try {
+    const session = await getSession("ADMIN");
+    if (!session?.success) {
+      return redirect("/login");
+    }
+    if (!session.data.id) {
+      return redirect("/login");
+    }
+    const existingAdmin = await prisma.school.findUnique({
+      where: { id: session.data.id },
+    });
+    if (!existingAdmin) {
+      return redirect("/login");
+    }
+    const transactions = await prisma.payment.findMany({
+      where: { schoolId: existingAdmin.id },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+    return transactions;
+  } catch (error) {
+    if (isRedirectError(error)) throw error;
+    return null;
+  }
+}

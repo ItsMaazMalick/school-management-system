@@ -8,11 +8,7 @@ export default async function AccountSetting() {
 
   return (
     <div>
-      <RouteTitle
-        route="Dashboard"
-        subRoute="Account Setting"
-        icon={<LayoutDashboard size={20} />}
-      />
+      <RouteTitle route="Dashboard" subRoute="Account Setting" />
       <UpdateSchoolUserForm school={school} />
     </div>
   );

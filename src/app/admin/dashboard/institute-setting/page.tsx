@@ -11,11 +11,7 @@ export default async function InstituteSetting() {
   }
   return (
     <div>
-      <RouteTitle
-        route="Dashboard"
-        subRoute="Institute Profile"
-        icon={<LayoutDashboard size={20} />}
-      />
+      <RouteTitle route="Dashboard" subRoute="Institute Profile" />
       <UpdateSchoolForm school={school} />
     </div>
   );

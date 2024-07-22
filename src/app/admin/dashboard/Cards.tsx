@@ -14,33 +14,33 @@ export default async function Cards() {
         title="Students"
         value={1000}
         icon={<User2 size={40} />}
-        color="text-[#FB9958]"
-        shadow="shadow-[#FB9958]"
-        className="from-[#FB9958] to-[#FDC5A0]"
+        color="text-[#eb3349]"
+        shadow="shadow-[#eb3349]"
+        className="from-[#eb3349] to-[#f45c43]"
       />
       <DashboardCard
         title="Teachers"
         value={1000}
         icon={<GraduationCapIcon size={40} />}
-        color="text-[#7C75DD]"
-        shadow="shadow-[#7C75DD]"
-        className="from-[#7C75DD] to-[#9c98ED]"
+        color="text-[#FB9958]"
+        shadow="shadow-[#FB9958]"
+        className="from-[#FB9958] to-[#FDC5A0]"
       />
       <DashboardCard
         title="Classes"
         value={1000}
         icon={<School2 size={40} />}
-        color="text-[#03B0D2]"
-        shadow="shadow-[#03B0D2]"
-        className="from-[#03B0D2] to-[#03B0D2]"
+        color="text-[#7C75DD]"
+        shadow="shadow-[#7C75DD]"
+        className="from-[#7C75DD] to-[#9c98ED]"
       />
       <DashboardCard
         title="Revenue"
         value={1000}
         icon={<DollarSignIcon size={40} />}
-        color="text-[#eb3349]"
-        shadow="shadow-[#eb3349]"
-        className="from-[#eb3349] to-[#f45c43]"
+        color="text-[#03B0D2]"
+        shadow="shadow-[#03B0D2]"
+        className="from-[#03B0D2] to-[#03B0D2]"
       />
     </div>
   );

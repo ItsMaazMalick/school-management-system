@@ -60,7 +60,6 @@ export function UpdateSchoolForm({ school }: { school: any }) {
               name="name"
               placeholder="School Name"
               control={form.control}
-              autoFocus
               required
             />
             <TextInputField

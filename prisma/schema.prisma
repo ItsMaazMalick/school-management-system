@@ -46,7 +46,9 @@ model School {
 
 model Payment {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  trxId     String   @unique
   amount    Float
+  title     String
   school    School   @relation(fields: [schoolId], references: [id], onDelete: Cascade)
   schoolId  String   @db.ObjectId
   createdAt DateTime @default(now())
