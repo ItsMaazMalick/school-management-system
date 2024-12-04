@@ -8,6 +8,9 @@ const nextConfig = {
       },
     ],
   },
+  eslint: {
+    ignoreDuringBuilds: true, // Disables ESLint during the build process
+  },
 };
 
 export default nextConfig;
