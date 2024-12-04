@@ -21,16 +21,25 @@ export default async function DashboardPage() {
   const pendingOrders = await getPendingOrdersLength();
   const paidOrders = await getPaidOrdersLength();
 
+  if (
+    !products ||
+    !services ||
+    !orders ||
+    !ordersLength ||
+    !pendingOrders ||
+    !paidOrders
+  ) {
+    return null;
+  }
+
   return (
-    <Suspense fallback={<p>Loading...</p>}>
-      <Dashboard
-        products={products}
-        services={services}
-        orders={orders}
-        totalOrdersLength={ordersLength}
-        pendingOrders={pendingOrders}
-        paidOrders={paidOrders}
-      />
-    </Suspense>
+    <Dashboard
+      products={products}
+      services={services}
+      orders={orders}
+      totalOrdersLength={ordersLength}
+      pendingOrders={pendingOrders}
+      paidOrders={paidOrders}
+    />
   );
 }
