@@ -91,11 +91,7 @@ export default async function DashboardPage() {
                 </thead>
                 <tbody>
                   {orders?.map((order: any) => (
-                    <tr
-                      key={order.id}
-                      className="border-b cursor-pointer"
-                      onClick={() => {}}
-                    >
+                    <tr key={order.id} className="border-b cursor-pointer">
                       <td className="p-2">{order.id}</td>
                       <td className="p-2">{order.email}</td>
                       <td className="p-2">{order.contactNumber}</td>
