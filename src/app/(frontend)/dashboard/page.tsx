@@ -18,7 +18,7 @@ export default async function DashboardPage() {
   const ordersLength = await totalOrdersLength();
   const pendingOrders = await getPendingOrdersLength();
   const paidOrders = await getPaidOrdersLength();
-  console.log(orders);
+
   return (
     <Suspense fallback={<p>Loading...</p>}>
       <Dashboard
