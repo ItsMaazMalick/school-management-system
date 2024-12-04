@@ -1,9 +1,5 @@
-"use client";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart3 } from "lucide-react";
-import { useRouter } from "next/navigation";
-
 export default function Dashboard({
   products,
   services,
@@ -12,8 +8,6 @@ export default function Dashboard({
   pendingOrders,
   paidOrders,
 }: any) {
-  const router = useRouter();
-
   return (
     <>
       {/* TOP CARDS */}
@@ -84,9 +78,7 @@ export default function Dashboard({
                     <tr
                       key={order.id}
                       className="border-b cursor-pointer"
-                      onClick={() =>
-                        router.push(`/dashboard/orders/${order.id}`)
-                      }
+                      onClick={() => {}}
                     >
                       <td className="p-2">{order.id}</td>
                       <td className="p-2">{order.email}</td>
