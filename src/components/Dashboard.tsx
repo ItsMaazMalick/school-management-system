@@ -18,7 +18,7 @@ export default function Dashboard({
             <BarChart3 className="h-4 w-4" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalOrdersLength}</div>
+            <div className="text-2xl font-bold">{totalOrdersLength || 0}</div>
             {/* <p className="text-xs text-secondary-100">+20.1% from last month</p> */}
           </CardContent>
         </Card>
@@ -28,7 +28,7 @@ export default function Dashboard({
             <BarChart3 className="h-4 w-4" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{paidOrders}</div>
+            <div className="text-2xl font-bold">{paidOrders || 0}</div>
             {/* <p className="text-xs text-secondary-100">+20.1% from last month</p> */}
           </CardContent>
         </Card>
@@ -40,7 +40,7 @@ export default function Dashboard({
             <BarChart3 className="h-4 w-4" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{pendingOrders}</div>
+            <div className="text-2xl font-bold">{pendingOrders || 0}</div>
             {/* <p className="text-xs text-secondary-100">+20.1% from last month</p> */}
           </CardContent>
         </Card>
@@ -74,7 +74,7 @@ export default function Dashboard({
                   </tr>
                 </thead>
                 <tbody>
-                  {orders.map((order: any) => (
+                  {orders?.map((order: any) => (
                     <tr
                       key={order.id}
                       className="border-b cursor-pointer"
@@ -124,7 +124,7 @@ export default function Dashboard({
                   </tr>
                 </thead>
                 <tbody>
-                  {products.map((product: any) => (
+                  {products?.map((product: any) => (
                     <tr key={product.id} className="border-b">
                       <td className="p-2">{product.name}</td>
                       <td className="p-2">100</td>
@@ -170,7 +170,7 @@ export default function Dashboard({
                   </tr>
                 </thead>
                 <tbody>
-                  {services.map((service: any) => (
+                  {services?.map((service: any) => (
                     <tr key={service.id} className="border-b">
                       <td className="p-2">{service.name}</td>
                       <td className="p-2">{service.Product?.name}</td>
