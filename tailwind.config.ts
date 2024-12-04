@@ -35,12 +35,32 @@ const config = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
+          50: "rgba(34, 52, 101, 0.05)",
+          100: "rgba(34, 52, 101, 0.1)",
+          200: "rgba(34, 52, 101, 0.2)",
+          300: "rgba(34, 52, 101, 0.3)",
+          400: "rgba(34, 52, 101, 0.4)",
+          500: "rgba(34, 52, 101, 0.5)",
+          600: "rgba(34, 52, 101, 0.6)",
+          700: "rgba(34, 52, 101, 0.7)",
+          800: "rgba(34, 52, 101, 0.8)",
+          900: "rgba(34, 52, 101, 0.9)",
+          DEFAULT: "#223465",
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          50: "rgba(240, 90, 118, 0.05)", // Adjust this RGB color if necessary
+          100: "rgba(240, 90, 118, 0.1)",
+          200: "rgba(240, 90, 118, 0.2)",
+          300: "rgba(240, 90, 118, 0.3)",
+          400: "rgba(240, 90, 118, 0.4)",
+          500: "rgba(240, 90, 118, 0.5)",
+          600: "rgba(240, 90, 118, 0.6)",
+          700: "rgba(240, 90, 118, 0.7)",
+          800: "rgba(240, 90, 118, 0.8)",
+          900: "rgba(240, 90, 118, 0.9)",
+          DEFAULT: "hsl(var(--secondary))", // Add actual secondary color if not using var
+          foreground: "hsl(var(--secondary-foreground))", // Add actual foreground if needed
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
