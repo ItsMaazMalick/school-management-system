@@ -1,15 +1,17 @@
 import { getAllProductWithCategoryName } from "@/actions/product";
 import { getALLServices } from "@/actions/service";
 import { Suspense } from "react";
-import Dashboard from "../../../components/Dashboard";
+
 import {
   getAllOrders,
   getPaidOrdersLength,
   getPendingOrdersLength,
   totalOrdersLength,
 } from "@/actions/order";
-
-export const dynamic = "force-dynamic";
+import dynamic from "next/dynamic";
+const Dashboard = dynamic(() => import("../../../components/Dashboard"), {
+  ssr: false, // Disables SSR for this component
+});
 
 export default async function DashboardPage() {
   const products = await getAllProductWithCategoryName();
