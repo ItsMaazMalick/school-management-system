@@ -2,9 +2,17 @@ import { getALLGlass } from "@/actions/glass";
 import { getAllProductWithCategoryName } from "@/actions/product";
 import { getAllRepairingProducts } from "@/actions/repairing";
 import { getALLScreens } from "@/actions/screen";
-import MobilePhonesAndServicesPage from "./mobile-and-repair";
 import { UserNavbar } from "./user-navbar";
 import { Suspense } from "react";
+
+import dynamic from "next/dynamic";
+
+const MobilePhonesAndServicesPage = dynamic(
+  () => import("./mobile-and-repair"),
+  {
+    ssr: false, // Disables SSR for this component
+  }
+);
 
 export default async function Home() {
   const products = await getAllProductWithCategoryName();
