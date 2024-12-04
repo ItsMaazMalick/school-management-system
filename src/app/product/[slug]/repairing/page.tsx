@@ -1,7 +1,7 @@
 import { getServicesWithProduct } from "@/actions/service";
 
 import { getRepairingProductBySlug } from "@/actions/repairing";
-import { Repairing } from "@/app/(frontend)/dashboard/products/[slug]/repairing/repairing";
+// import { Repairing } from "@/app/(frontend)/dashboard/products/[slug]/repairing/repairing";
 import { UserNavbar } from "@/app/user-navbar";
 
 export default async function RepairingPage({
@@ -15,7 +15,7 @@ export default async function RepairingPage({
   return (
     <>
       <UserNavbar className="sticky top-0 z-50" />
-      <Repairing product={product} />;
+      {/* <Repairing product={product} />; */}
     </>
   );
 }
