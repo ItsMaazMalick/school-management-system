@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
-import { Open_Sans as FontSans } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
+import { Navbar } from "@/components/navbar";
 
-import { cn } from "@/lib/utils";
-
-const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
+const geistSans = localFont({
+  src: "./fonts/GeistVF.woff",
+  variable: "--font-geist-sans",
+  weight: "100 900",
+});
+const geistMono = localFont({
+  src: "./fonts/GeistMonoVF.woff",
+  variable: "--font-geist-mono",
+  weight: "100 900",
 });
 
 export const metadata: Metadata = {
@@ -22,10 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={cn(
-          "font-sans w-[100dvw] overflow-x-hidden",
-          fontSans.variable
-        )}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen w-full`}
       >
         {children}
       </body>

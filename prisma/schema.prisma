@@ -7,203 +7,144 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model SuperAdmin {
-  id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  name       String
-  email      String    @unique
-  password   String
-  role       Roles     @default(SUPERADMIN)
-  isVerified DateTime?
-  schools    School[]
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+model User {
+  id            String     @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  email         String     @unique
+  password      String
+  role          Role       @default(admin)
+  emailVerified DateTime?
+  isApproved    Boolean    @default(false)
+  categories    Category[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  @@map("users")
 }
 
-model School {
-  id              String     @id @default(auto()) @map("_id") @db.ObjectId
-  name            String
-  email           String     @unique
-  targetLine      String
-  image           String?
-  contact         String
-  website         String?
-  address         String
-  country         String
-  lastPaymentDate String?
-  isActive        Boolean    @default(false)
-  username        String     @unique
-  password        String
-  payments        Payment[]
-  classes         Class[]
-  teachers        Teacher[]
-  superAdmin      SuperAdmin @relation(fields: [superAdminId], references: [id], onDelete: Cascade)
-  superAdminId    String     @db.ObjectId
-  createdAt       DateTime   @default(now())
-  updatedAt       DateTime   @updatedAt
-
-  @@map("schools")
-}
-
-model Payment {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  trxId     String   @unique
-  amount    Float
-  title     String
-  school    School   @relation(fields: [schoolId], references: [id], onDelete: Cascade)
-  schoolId  String   @db.ObjectId
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("payments")
-}
-
-model Teacher {
-  id           String              @id @default(auto()) @map("_id") @db.ObjectId
-  name         String
-  contact      String
-  image        String?
-  joiningDate  String
-  salary       Float
-  guardienName String
-  gender       String
-  experience   String?
-  cnic         String              @unique
-  religion     String?
-  email        String?
-  education    String
-  bloodGroup   String?
-  dateOfBirth  String
-  address      String?
-  isActive     Boolean             @default(true)
-  username     String              @unique
-  password     String
-  subjects     Subject[]
-  school       School              @relation(fields: [schoolId], references: [id], onDelete: Cascade)
-  schoolId     String              @db.ObjectId
-  attendance   TeacherAttendance[]
-  createdAt    DateTime            @default(now())
-  updatedAt    DateTime            @updatedAt
-
-  @@map("teachers")
-}
-
-model Class {
+model Category {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
   name      String
-  school    School    @relation(fields: [schoolId], references: [id], onDelete: Cascade)
-  schoolId  String    @db.ObjectId
-  sections  Section[]
+  slug      String    @unique
+  products  Product[]
+  user      User?     @relation(fields: [userId], references: [id])
+  userId    String?   @db.ObjectId
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
-  @@map("classes")
+  @@map("categories")
 }
 
-model Section {
-  id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  name       String
-  monthlyFee Float
-  subjects   Subject[]
-  students   Student[]
-  class      Class     @relation(fields: [classId], references: [id], onDelete: Cascade)
-  classId    String    @db.ObjectId
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+model Product {
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  slug        String      @unique
+  price       Float
+  description String?
+  storage     String
+  image       String?
+  variants    Variant[]
+  category    Category    @relation(fields: [categoryId], references: [id])
+  categoryId  String      @db.ObjectId
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  OrderItem   OrderItem[]
 
-  @@map("sections")
+  @@map("products")
 }
 
-model Subject {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  teacher   Teacher  @relation(fields: [teacherId], references: [id])
-  teacherId String   @db.ObjectId
-  section   Section  @relation(fields: [sectionId], references: [id], onDelete: Cascade)
-  sectionId String   @db.ObjectId
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("subjects")
-}
-
-model Student {
-  id             String              @id @default(auto()) @map("_id") @db.ObjectId
+model RepairProduct {
+  id             String           @id @default(auto()) @map("_id") @db.ObjectId
   name           String
-  regNumber      String              @unique
-  image          String?
-  admissionDate  String
-  feeDiscount    Float?
-  contact        String
-  dateOfBirth    String
-  cnic           String
-  gender         String
-  previousSchool String?
-  religion       String?
-  bloodGroup     String?
-  address        String
-  isActive       Boolean             @default(true)
-  username       String              @unique
-  password       String
-  guardien       Guardien            @relation(fields: [guardienId], references: [id])
-  guardienId     String              @db.ObjectId
-  section        Section             @relation(fields: [sectionId], references: [id])
-  sectionId      String              @db.ObjectId
-  attendance     StudentAttendance[]
-  createdAt      DateTime            @default(now())
-  updatedAt      DateTime            @updatedAt
+  slug           String           @unique
+  RepairServices RepairServices[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
 
-  @@map("students")
+  @@map("repairproducts")
 }
 
-model Guardien {
-  id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  name       String
-  cnic       String
-  occupation String?
-  education  String?
-  contact    String
-  profession String?
-  income     Float?
-  students   Student[]
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+model RepairServices {
+  id                String              @id @default(auto()) @map("_id") @db.ObjectId
+  name              String
+  price             Float
+  description       String?
+  estimatedTime     String?
+  type              RepairService
+  Product           RepairProduct?      @relation(fields: [productId], references: [id])
+  productId         String?             @db.ObjectId
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  OrderServicesItem OrderServicesItem[]
+  variants          Variant[]
 
-  @@map("guardiens")
+  @@map("repairservices")
 }
 
-model StudentAttendance {
-  id        String           @id @default(auto()) @map("_id") @db.ObjectId
-  date      String
-  status    AttendanceStatus
-  student   Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  studentId String           @db.ObjectId
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
+model Variant {
+  id               String          @id @default(auto()) @map("_id") @db.ObjectId
+  name             String
+  price            Float
+  discount         Int?
+  product          Product?        @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId        String?         @db.ObjectId
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  RepairServices   RepairServices? @relation(fields: [repairServicesId], references: [id], onDelete: Cascade)
+  repairServicesId String?         @db.ObjectId
 
-  @@map("studentAttendance")
+  @@map("variants")
 }
 
-model TeacherAttendance {
-  id        String           @id @default(auto()) @map("_id") @db.ObjectId
-  date      String
-  status    AttendanceStatus
-  teacher   Teacher          @relation(fields: [teacherId], references: [id])
-  teacherId String           @db.ObjectId
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
+model Order {
+  id                String              @id @default(auto()) @map("_id") @db.ObjectId
+  contactNumber     String
+  email             String?
+  orderStatus       OrderStatus
+  price             Float
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  OrderServicesItem OrderServicesItem[]
+  orderProducts     OrderItem[]
 
-  @@map("teacherAttendance")
+  @@map("orders")
 }
 
-enum AttendanceStatus {
-  PRESENT
-  ABSENT
-  LEAVE
+model OrderItem {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  products  Product? @relation(fields: [productId], references: [id])
+  productId String?  @db.ObjectId
+  quantity  Int
+  Order     Order    @relation(fields: [orderId], references: [id])
+  orderId   String   @db.ObjectId
+
+  @@map("orderitems")
 }
 
-enum Roles {
-  SUPERADMIN
-  ADMIN
-  TEACHER
-  STUDENT
+model OrderServicesItem {
+  id        String         @id @default(auto()) @map("_id") @db.ObjectId
+  name      String?
+  services  RepairServices @relation(fields: [serviceId], references: [id])
+  serviceId String         @db.ObjectId
+  orderId   String         @db.ObjectId
+  order     Order          @relation(fields: [orderId], references: [id])
+  quantity  Int
+
+  @@map("orderservicesitems")
+}
+
+enum Role {
+  admin
+  superadmin
+}
+
+enum OrderStatus {
+  pending
+  paid
+}
+
+enum RepairService {
+  basic
+  screen
+  glass
 }
