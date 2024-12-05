@@ -62,48 +62,7 @@ export function UserNavbar({ className }: { className?: string }) {
                 </Badge>
               )}
             </Link>
-
-            <div className="ml-4 md:hidden">
-              <Button variant="ghost" onClick={toggleMenu}>
-                <Menu className="h-6 w-6" />
-              </Button>
-            </div>
           </div>
-        </div>
-      </div>
-
-      {/* Mobile menu */}
-
-      <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white shadow-lg absolute top-16 left-0 right-0 z-50">
-        {/* {navItems.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-100 transition duration-150 ease-in-out"
-              onClick={toggleMenu}
-            >
-              {item.name}
-            </Link>
-          ))} */}
-        <div className="mt-4 flex justify-between items-center px-3">
-          <Link
-            href="/cart"
-            className="text-gray-700 hover:text-primary transition duration-150 ease-in-out relative"
-            onClick={toggleMenu}
-          >
-            <ShoppingCart className="h-6 w-6" />
-            {totalItems > 0 && (
-              <Badge
-                variant="destructive"
-                className="absolute -top-2 -right-2 text-xs"
-              >
-                {totalItems}
-              </Badge>
-            )}
-          </Link>
-          <Button variant="ghost" onClick={toggleMenu}>
-            <X className="h-6 w-6" />
-          </Button>
         </div>
       </div>
     </nav>

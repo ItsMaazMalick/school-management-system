@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Phone,
   Search,
@@ -25,6 +25,9 @@ import { useCartStore } from "@/store";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
 import Image from "next/image";
+import dynamic from "next/dynamic";
+
+// const Badge = dynamic(() => import('@/components/ui/badge'), { ssr: false });
 
 // Mock data for mobile phones
 const phones = [
@@ -138,30 +141,18 @@ export default function MobilePhonesAndServicesPage({
 }: any) {
   const [phoneSearchTerm, setPhoneSearchTerm] = useState("");
   const [serviceSearchTerm, setServiceSearchTerm] = useState("");
-  const [backGlassSearchTerm, setBackGlassSearchTerm] = useState("");
-  const [screenSearchTerm, setScreenSearchTerm] = useState("");
-  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const { addItem } = useCartStore();
 
-  const filteredPhones = phones.filter(
-    (phone) =>
-      phone.name.toLowerCase().includes(phoneSearchTerm.toLowerCase()) &&
-      (selectedBrands.length === 0 || selectedBrands.includes(phone.brand))
-  );
+  // Inside your component
+  const [hasMounted, setHasMounted] = useState(false);
 
-  const filteredServices = repairServices.filter((service: any) =>
-    service.name.toLowerCase().includes(serviceSearchTerm.toLowerCase())
-  );
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
-  const filteredBackGlass = backGlassServices.filter((service: any) =>
-    service.name.toLowerCase().includes(backGlassSearchTerm.toLowerCase())
-  );
-
-  const filteredScreens = mobileScreens.filter((screen: any) =>
-    screen.name.toLowerCase().includes(screenSearchTerm.toLowerCase())
-  );
-
-  const brands = Array.from(new Set(phones?.map((p) => p.brand)));
+  if (!hasMounted) {
+    return null; // or a loading spinner
+  }
 
   const handleAddToCart = (
     item:
@@ -186,11 +177,11 @@ export default function MobilePhonesAndServicesPage({
       </h1>
 
       <Tabs defaultValue="phones" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 bg-primary-300">
+        <TabsList className="grid w-full h-full md:grid-cols-2 grid-cols-1 bg-primary-300">
           <TabsTrigger value="phones">Mobile Phones</TabsTrigger>
           <TabsTrigger value="services">Repair Services</TabsTrigger>
-          <TabsTrigger value="backglass">Back Glass</TabsTrigger>
-          <TabsTrigger value="screens">Mobile Screens</TabsTrigger>
+          {/* <TabsTrigger value="backglass">Back Glass</TabsTrigger> */}
+          {/* <TabsTrigger value="screens">Mobile Screens</TabsTrigger> */}
         </TabsList>
 
         <TabsContent value="phones">
@@ -221,7 +212,7 @@ export default function MobilePhonesAndServicesPage({
                   <CardTitle className="mb-2">{phone.name}</CardTitle>
                   <p className="text-sm text-gray-500 mb-2">{phone.brand}</p>
                   <Badge variant="default" className="mb-2">
-                    <Smartphone className="mr-1 h-3 w-3" />
+                    {/* <Smartphone className="mr-1 h-3 w-3" /> */}
                     Mobile Phone
                   </Badge>
                   <p className="text-lg font-bold">${phone.price}</p>
@@ -264,6 +255,9 @@ export default function MobilePhonesAndServicesPage({
               onChange={(e) => setServiceSearchTerm(e.target.value)}
             />
           </div>
+          <div className="my-4">
+            <p className="text-2xl font-bold text-center">Phone Parts</p>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {repairingProducts?.map((service: any) => (
               <Card
@@ -272,7 +266,7 @@ export default function MobilePhonesAndServicesPage({
               >
                 <CardHeader>
                   <Image
-                    src={"/repair-service.png"}
+                    src={"/images/repair-service.jpg"}
                     alt={service.name}
                     width={1000}
                     height={1000}
@@ -282,7 +276,7 @@ export default function MobilePhonesAndServicesPage({
                 <CardContent className="flex-grow">
                   <CardTitle className="mb-2">{service.name}</CardTitle>
                   <Badge variant="secondary" className="mb-2">
-                    <Tool className="mr-1 h-3 w-3" />
+                    {/* <Tool className="mr-1 h-3 w-3" /> */}
                     Repair Service
                   </Badge>
                 </CardContent>
@@ -296,7 +290,7 @@ export default function MobilePhonesAndServicesPage({
               </Card>
             ))}
           </div>
-          {filteredServices.length === 0 && (
+          {repairServices.length === 0 && (
             <div className="text-center py-12">
               <Tool className="mx-auto h-12 w-12 text-gray-400" />
               <h3 className="mt-2 text-sm font-semibold text-gray-900">
@@ -307,9 +301,107 @@ export default function MobilePhonesAndServicesPage({
               </p>
             </div>
           )}
+          <div className="my-4">
+            <p className="text-2xl font-bold text-center">Back Glasses</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {glass?.map((gl: any) => (
+              <Card
+                key={gl.id}
+                className="flex flex-col shadow-lg transition-transform transform hover:scale-105"
+              >
+                <CardHeader>
+                  <Image
+                    src={"/images/repair-service.jpg"}
+                    alt={gl.name}
+                    width={1000}
+                    height={1000}
+                    className="w-full h-48 object-contain rounded-t-lg"
+                  />
+                </CardHeader>
+                <CardContent className="flex-grow">
+                  <CardTitle className="mb-2">{gl.name}</CardTitle>
+                  <Badge variant="secondary" className="mb-2">
+                    {/* <Layers className="mr-1 h-3 w-3" /> */}
+                    Back Glass
+                  </Badge>
+                  <p className="text-lg font-bold">${gl.price}</p>
+                </CardContent>
+                <CardFooter>
+                  <Button
+                    variant="default"
+                    className="w-full"
+                    onClick={() => handleAddToCart(gl, "backglass")}
+                  >
+                    Add to Cart
+                  </Button>
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+          {glass.length === 0 && (
+            <div className="text-center py-12">
+              <Layers className="mx-auto h-12 w-12 text-gray-400" />
+              <h3 className="mt-2 text-sm font-semibold text-gray-900">
+                No back glass services found
+              </h3>
+              <p className="mt-1 text-sm text-gray-500">
+                Try adjusting your search to find what you&apos;re looking for.
+              </p>
+            </div>
+          )}
+          <div className="my-4">
+            <p className="text-2xl font-bold text-center">Screens</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {screens?.map((screen: any) => (
+              <Card
+                key={screen.id}
+                className="flex flex-col shadow-lg transition-transform transform hover:scale-105"
+              >
+                <CardHeader>
+                  <Image
+                    src={"/images/repair-service.jpg"}
+                    alt={screen.name}
+                    width={1000}
+                    height={1000}
+                    className="w-full h-48 object-contain rounded-t-lg"
+                  />
+                </CardHeader>
+                <CardContent className="flex-grow">
+                  <CardTitle className="mb-2">{screen.name}</CardTitle>
+                  <Badge variant="secondary" className="mb-2">
+                    {/* <Monitor className="mr-1 h-3 w-3" /> */}
+                    Mobile Screen
+                  </Badge>
+                  <p className="text-lg font-bold">${screen.price}</p>
+                </CardContent>
+                <CardFooter>
+                  <Button
+                    variant="default"
+                    className="w-full"
+                    onClick={() => handleAddToCart(screen, "screen")}
+                  >
+                    Add to Cart
+                  </Button>
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+          {screens.length === 0 && (
+            <div className="text-center py-12">
+              <Monitor className="mx-auto h-12 w-12 text-gray-400" />
+              <h3 className="mt-2 text-sm font-semibold text-gray-900">
+                No mobile screens found
+              </h3>
+              <p className="mt-1 text-sm text-gray-500">
+                Try adjusting your search to find what you&apos;re looking for.
+              </p>
+            </div>
+          )}
         </TabsContent>
 
-        <TabsContent value="backglass">
+        {/* <TabsContent value="backglass">
           <div className="mb-4">
             <Input
               type="text"
@@ -326,7 +418,7 @@ export default function MobilePhonesAndServicesPage({
               >
                 <CardHeader>
                   <Image
-                    src={"/repair-service.png"}
+                    src={"/images/repair-service.jpg"}
                     alt={gl.name}
                     width={1000}
                     height={1000}
@@ -364,9 +456,9 @@ export default function MobilePhonesAndServicesPage({
               </p>
             </div>
           )}
-        </TabsContent>
+        </TabsContent> */}
 
-        <TabsContent value="screens">
+        {/* <TabsContent value="screens">
           <div className="mb-4">
             <Input
               type="text"
@@ -383,7 +475,7 @@ export default function MobilePhonesAndServicesPage({
               >
                 <CardHeader>
                   <Image
-                    src={"/repair-service.png"}
+                    src={"/images/repair-service.jpg"}
                     alt={screen.name}
                     width={1000}
                     height={1000}
@@ -421,7 +513,7 @@ export default function MobilePhonesAndServicesPage({
               </p>
             </div>
           )}
-        </TabsContent>
+        </TabsContent> */}
       </Tabs>
     </div>
   );
