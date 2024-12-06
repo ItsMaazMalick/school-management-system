@@ -60,11 +60,17 @@ export function OrderPage({ order }: any) {
           <CardTitle>Order Information</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <p className="font-semibold">Order ID:</p>
               <p>{order.id}</p>
             </div>
+            {order.trxId && (
+              <div>
+                <p className="font-semibold">TRX ID:</p>
+                <p>{order.trxId}</p>
+              </div>
+            )}
             <div>
               <p className="font-semibold">Status:</p>
               <Badge

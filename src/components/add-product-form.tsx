@@ -33,9 +33,12 @@ export function AddProductForm({ categories }: any) {
     if (!image) {
       throw new Error("Image is required...");
     }
+
+    // Upload the image first.
     const res = await uploadImage(image);
+
     if (!res.success) {
-      return console.log("error");
+      return console.log("Image upload failed");
     }
 
     const response = await addProduct(values, res.result.secure_url);
@@ -76,20 +79,8 @@ export function AddProductForm({ categories }: any) {
                 onChange={(e) => setImage(e.target.files?.[0])}
               />
             </div>
-            <TextInput label="Display" name="display" control={form.control} />
+
             <TextInput label="Storage" name="storage" control={form.control} />
-            <TextInput label="Chip" name="chip" control={form.control} />
-            <TextInput
-              label="Front Camera"
-              name="frontCamera"
-              control={form.control}
-            />
-            <TextInput
-              label="Back Camera"
-              name="backCamera"
-              control={form.control}
-            />
-            <TextInput label="Battery" name="battery" control={form.control} />
           </div>
           <div className="p-4">
             <TextAreaInput

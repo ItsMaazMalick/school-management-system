@@ -36,6 +36,7 @@ export const createOrderSchema = z.object({
     })
     .optional(),
   contactNumber: z.string().min(1, "Phone number is required"),
+  trxId: z.string().optional(),
 });
 
 export function CheckoutForm() {
@@ -53,6 +54,7 @@ export function CheckoutForm() {
     defaultValues: {
       email: "",
       contactNumber: "",
+      trxId: "",
     },
   });
 
@@ -107,6 +109,22 @@ export function CheckoutForm() {
                     <FormDescription>
                       We&apos;ll use this number to contact you about your order
                       if necessary.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="trxId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>TRX ID (optional)</FormLabel>
+                    <FormControl>
+                      <Input type="text" placeholder="123456789" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      If paid online than Enter TRX ID
                     </FormDescription>
                     <FormMessage />
                   </FormItem>

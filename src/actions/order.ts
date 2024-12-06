@@ -1,6 +1,7 @@
 "use server";
 
 import prisma from "@/lib/db";
+import { sendEmail } from "@/lib/send-email";
 
 interface CartItem {
   id: number; // Or number if the product ID is numeric
@@ -13,6 +14,7 @@ interface CartItem {
 interface CreateOrderValues {
   contactNumber: string;
   email?: string; // Optional email
+  trxId?: string; // Optional transaction ID
   cartItems: CartItem[];
 }
 
@@ -33,6 +35,7 @@ export async function createOrder(values: CreateOrderValues) {
       data: {
         contactNumber: values.contactNumber,
         email: values.email,
+        trxId: values.trxId,
         price: totalPrice,
         orderStatus: "pending",
       },
@@ -99,6 +102,10 @@ export async function createOrder(values: CreateOrderValues) {
       );
     }
 
+    if (values.email) {
+      const res = await sendEmail({ email: values.email, data: { ...values } });
+    }
+
     return { success: "Order created..." };
   } catch {
     return { error: "Something went wrong" };
@@ -108,6 +115,20 @@ export async function createOrder(values: CreateOrderValues) {
 export async function getAllOrders() {
   try {
     const orders = await prisma.order.findMany();
+    return orders;
+  } catch {
+    return null;
+  }
+}
+
+export async function getLast10Orders() {
+  try {
+    const orders = await prisma.order.findMany({
+      take: 10,
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
     return orders;
   } catch {
     return null;

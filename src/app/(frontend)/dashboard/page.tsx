@@ -6,10 +6,12 @@ import { BarChart3 } from "lucide-react";
 
 import {
   getAllOrders,
+  getLast10Orders,
   getPaidOrdersLength,
   getPendingOrdersLength,
   totalOrdersLength,
 } from "@/actions/order";
+import Link from "next/link";
 // import dynamic from "next/dynamic";
 
 // const Dashboard = dynamic(() => import("../../../components/Dashboard"), {
@@ -19,7 +21,7 @@ import {
 export default async function DashboardPage() {
   const products = await getAllProductWithCategoryName();
   const services = await getALLServices();
-  const orders = await getAllOrders();
+  const orders = await getLast10Orders();
   const ordersLength = await totalOrdersLength();
   const pendingOrders = await getPendingOrdersLength();
   const paidOrders = await getPaidOrdersLength();
@@ -27,7 +29,7 @@ export default async function DashboardPage() {
   return (
     <>
       {/* TOP CARDS */}
-      <div className="w-full grid grid-cols-4 p-4 gap-4">
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 p-4 gap-4">
         <Card className="bg-gradient-to-br from-primary-700 to-primary-400 text-primary-foreground shadow-md">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Orders</CardTitle>
@@ -86,16 +88,24 @@ export default async function DashboardPage() {
                     <th className="text-left p-2">Customer Email</th>
                     <th className="text-left p-2">Customer Contact</th>
                     <th className="text-left p-2">Amount</th>
+                    <th className="text-left p-2">Order Date</th>
                     <th className="text-left p-2">Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   {orders?.map((order: any) => (
                     <tr key={order.id} className="border-b cursor-pointer">
-                      <td className="p-2">{order.id}</td>
+                      <td className="p-2">
+                        <Link href={`/dashboard/orders/${order.id}`}>
+                          {order.id}
+                        </Link>
+                      </td>
                       <td className="p-2">{order.email}</td>
                       <td className="p-2">{order.contactNumber}</td>
                       <td className="p-2">${order.price}</td>
+                      <td className="p-2">
+                        {new Date(order.createdAt).toLocaleString()}
+                      </td>
                       <td className="p-2">
                         <span
                           className={`px-2 py-1 rounded-full text-xs ${
