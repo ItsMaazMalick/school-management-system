@@ -17,6 +17,7 @@ export const sendEmail = async ({
   const emailContent = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #f0f0f0; border-radius: 10px;">
       <h2 style="text-align: center; color: #333;">Order Summary</h2>
+      
       <p style="font-size: 16px; color: #333;">Hi <strong>User</strong>,</p>
       <p style="font-size: 16px; color: #333;">Thank you for your order! Below is a summary of your purchase.</p>
       

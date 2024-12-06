@@ -1,5 +1,6 @@
 import { getOrderById } from "@/actions/order";
 import { UserNavbar } from "@/app/user-navbar";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -9,6 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { redirect } from "next/navigation";
+import { QrCodePage } from "./qr-code";
 
 export default async function OrderSummary({
   params,
@@ -36,6 +38,11 @@ export default async function OrderSummary({
           </CardHeader>
 
           <CardContent>
+            <div className="flex justify-center items-center">
+              <QrCodePage
+                value={`http://localhost:3000/order-summary/${order.id}`}
+              />
+            </div>
             <h3 className="text-xl font-semibold mb-4">Order Summary</h3>
             <div className="flex items-center justify-between">
               <p className="font-semibold">Email</p>
@@ -45,9 +52,21 @@ export default async function OrderSummary({
               <p className="font-semibold">Contact</p>
               <p>{order?.contactNumber}</p>
             </div>
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center justify-between">
               <p className="font-semibold">TRX ID</p>
               <p>{order?.trxId}</p>
+            </div>
+            <div className="flex items-center justify-between mb-2">
+              <p className="font-semibold">Status</p>
+              <p
+                className={`${
+                  order.orderStatus === "pending"
+                    ? "bg-orange-300"
+                    : "bg-green-300"
+                } px-2 rounded-full`}
+              >
+                {order?.orderStatus}
+              </p>
             </div>
             <table className="min-w-full border-collapse border border-gray-200">
               <thead>
