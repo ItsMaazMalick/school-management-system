@@ -105,8 +105,8 @@ export async function createOrder(values: CreateOrderValues) {
     if (values.email) {
       const res = await sendEmail({ email: values.email, data: { ...values } });
     }
-
-    return { success: "Order created..." };
+    const order = await prisma.order.findUnique({ where: { id: result.id } });
+    return { success: "Order created...", order };
   } catch {
     return { error: "Something went wrong" };
   }

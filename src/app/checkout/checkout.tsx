@@ -43,11 +43,11 @@ export function CheckoutForm() {
   const { items, clearCart } = useCartStore();
   const router = useRouter();
 
-  useEffect(() => {
-    if (items.length <= 0) {
-      router.replace("/"); // Correct way to handle redirection
-    }
-  }, [router, items]);
+  // useEffect(() => {
+  //   if (items.length <= 0) {
+  //     router.replace("/"); // Correct way to handle redirection
+  //   }
+  // }, [router, items]);
 
   const form = useForm<z.infer<typeof createOrderSchema>>({
     resolver: zodResolver(createOrderSchema),
@@ -63,6 +63,7 @@ export function CheckoutForm() {
     if (res?.success) {
       clearCart();
     }
+    router.replace(`/order-summary/${res?.order?.id}`);
   }
 
   return (
