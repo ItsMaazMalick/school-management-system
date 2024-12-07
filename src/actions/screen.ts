@@ -44,3 +44,14 @@ export async function getALLScreens() {
     return null;
   }
 }
+
+export const deleteScreen = async (id: string) => {
+  try {
+    await prisma.repairServices.delete({
+      where: { type: "screen", id },
+    });
+    return { success: "Record deleted successfully" };
+  } catch {
+    return { error: "Internal server error" };
+  }
+};

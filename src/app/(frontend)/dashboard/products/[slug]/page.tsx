@@ -15,32 +15,6 @@ import { getProductBySlug } from "@/actions/product";
 export const dynamic = "force-dynamic";
 
 // Mock data for a single product
-const product = {
-  id: 1,
-  name: "iPhone 13",
-  brand: "Apple",
-  price: 799,
-  image: "/placeholder.svg?height=600&width=600",
-  description:
-    "The iPhone 13 features a stunning Super Retina XDR display, A15 Bionic chip, advanced dual-camera system, and 5G capability.",
-  specs: [
-    { name: "Display", value: "6.1-inch Super Retina XDR display" },
-    { name: "Storage", value: "64GB / 128GB / 256GB" },
-    { name: "Chip", value: "A15 Bionic chip" },
-    { name: "Camera", value: "Dual 12MP camera system" },
-    { name: "Front Camera", value: "12MP TrueDepth front camera" },
-    { name: "Battery", value: "Up to 19 hours video playback" },
-  ],
-  repairServices: [
-    { name: "Screen Replacement", price: 279 },
-    { name: "Battery Replacement", price: 69 },
-    { name: "Camera Repair", price: 89 },
-    { name: "Charging Port Repair", price: 99 },
-    { name: "Water Damage Repair", price: 299 },
-  ],
-  rating: 4.8,
-  reviews: 2731,
-};
 
 export default async function ProductDetailPage({
   params,
@@ -49,7 +23,6 @@ export default async function ProductDetailPage({
 }) {
   const slug = (await params).slug;
   const product = await getProductBySlug(slug);
-  console.log(product);
 
   if (!product) {
     return null;
@@ -93,10 +66,10 @@ export default async function ProductDetailPage({
           <p className="text-2xl font-bold mb-4">${product.price}</p>
           <p className="text-gray-600 mb-6">{product.description}</p>
 
-          <Button className="w-full mb-4">
+          {/* <Button className="w-full mb-4">
             <ShoppingCart className="mr-2 h-4 w-4" />
             Add to Cart
-          </Button>
+          </Button> */}
 
           <Separator className="my-6" />
 

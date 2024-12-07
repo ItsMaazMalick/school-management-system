@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useTransition } from "react";
 import { useParams } from "next/navigation";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
@@ -15,43 +15,24 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Phone, PenToolIcon as Tool } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Select } from "@/components/ui/select";
+import { updateOrderStatus } from "@/actions/order";
+import FormSubmitButton from "@/components/form-submit-button";
 
 // Define types based on your schema
-type OrderStatus = "pending" | "paid";
-
-interface OrderItem {
-  id: string;
-  productId: string;
-  quantity: number;
-  product: {
-    name: string;
-    price: number;
-  };
-}
-
-interface OrderServicesItem {
-  id: string;
-  serviceId: string;
-  quantity: number;
-  service: {
-    name: string;
-    price: number;
-  };
-}
-
-interface Order {
-  id: string;
-  contactNumber: string;
-  email: string | null;
-  orderStatus: OrderStatus;
-  price: number;
-  createdAt: string;
-  updatedAt: string;
-  orderProducts: OrderItem[];
-  OrderServicesItem: OrderServicesItem[];
-}
 
 export function OrderPage({ order }: any) {
+  const [orderStatus, setOrderStatus] = useState(order.orderStatus);
+  const [isPending, startTransition] = useTransition();
+
+  const updateStatus = (e: any) => {
+    e.preventDefault();
+    startTransition(async () => {
+      await updateOrderStatus(order.id, orderStatus);
+    });
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6">Order Details</h1>
@@ -98,6 +79,30 @@ export function OrderPage({ order }: any) {
               <p className="font-semibold">Updated At:</p>
               <p>{format(new Date(order.updatedAt), "PPpp")}</p>
             </div>
+            <form onSubmit={updateStatus}>
+              <p className="font-semibold">Update Status:</p>
+              <select
+                name=""
+                id=""
+                className="p-2 mr-2 ring-1 ring-black rounded-md"
+                onChange={(e) => setOrderStatus(e.target.value)}
+              >
+                <option value={order.orderStatus}>
+                  {order.orderStatus === "pending" ? "Pending" : "Paid"}
+                </option>
+                {order.orderStatus !== "pending" && (
+                  <option value="pending">Pending</option>
+                )}
+                {order.orderStatus !== "paid" && (
+                  <option value="paid">Paid</option>
+                )}
+              </select>
+              <FormSubmitButton
+                title="Update"
+                loading={isPending}
+                className="w-fit"
+              />
+            </form>
           </div>
         </CardContent>
       </Card>

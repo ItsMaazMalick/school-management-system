@@ -57,3 +57,14 @@ export async function getALLGlass() {
     return null;
   }
 }
+
+export const deleteGlass = async (id: string) => {
+  try {
+    await prisma.repairServices.delete({
+      where: { type: "glass", id },
+    });
+    return { success: "Record deleted successfully" };
+  } catch {
+    return { error: "Internal server error" };
+  }
+};

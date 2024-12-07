@@ -2,6 +2,7 @@
 
 import prisma from "@/lib/db";
 import { sendEmail } from "@/lib/send-email";
+import { revalidatePath } from "next/cache";
 
 interface CartItem {
   id: number; // Or number if the product ID is numeric
@@ -192,3 +193,29 @@ export async function getPaidOrdersLength() {
     return null;
   }
 }
+
+export const updateOrderStatus = async (id: string, orderStatus: string) => {
+  try {
+    await prisma.order.update({
+      where: { id },
+      data: {
+        orderStatus: orderStatus === "paid" ? "paid" : "pending",
+      },
+    });
+    revalidatePath(`/orders/${id}`);
+    return { success: "Record update successfully" };
+  } catch {
+    return { success: "Record update successfully" };
+  }
+};
+
+export const deleteOrder = async (id: string) => {
+  try {
+    await prisma.order.delete({
+      where: { id },
+    });
+    return { success: "Record deleted successfully" };
+  } catch {
+    return { error: "Internal server error" };
+  }
+};

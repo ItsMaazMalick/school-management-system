@@ -3,6 +3,7 @@
 import prisma from "@/lib/db";
 import { addProductSchema } from "@/lib/schemas/product-schema";
 import { generateSlug } from "@/lib/slug";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 export const addProduct = async (
@@ -76,3 +77,15 @@ export async function getProductBySlug(slug: string) {
     return null;
   }
 }
+
+export const deleteProduct = async (id: string) => {
+  try {
+    await prisma.product.delete({
+      where: { id },
+    });
+    revalidatePath("/dashboard/products");
+    return { success: "Record deleted successfully" };
+  } catch {
+    return { error: "Internal server error" };
+  }
+};

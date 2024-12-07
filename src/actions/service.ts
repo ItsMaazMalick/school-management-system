@@ -72,3 +72,14 @@ export async function getALLServices() {
     return null;
   }
 }
+
+export const deleteService = async (id: string) => {
+  try {
+    await prisma.repairServices.delete({
+      where: { type: "basic", id },
+    });
+    return { success: "Record deleted successfully" };
+  } catch {
+    return { error: "Internal server error" };
+  }
+};

@@ -1,4 +1,5 @@
 "use client";
+import { deleteProduct } from "@/actions/product";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -20,7 +21,7 @@ import { useCartStore } from "@/store";
 import { ChevronDown, Filter, Plus, Search, Smartphone } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 
 // Assuming you're passing a prop `products` that contains the product data from the backend
 export function Products({ products, link }: any) {
@@ -29,6 +30,7 @@ export function Products({ products, link }: any) {
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
   const { addItem } = useCartStore();
+  const [isPending, startTransition] = useTransition();
 
   // Handle case when products are undefined or empty
   if (!products || products.length === 0) {
@@ -64,6 +66,12 @@ export function Products({ products, link }: any) {
       type: "mobile",
     });
     console.log("added");
+  };
+
+  const handleDeleteProduct = (id: string) => {
+    startTransition(async () => {
+      await deleteProduct(id);
+    });
   };
 
   return (
@@ -138,7 +146,7 @@ export function Products({ products, link }: any) {
                 </Link> */}
               </div>
             </CardContent>
-            <CardFooter className="flex justify-between p-4 pt-0">
+            <CardFooter className="flex justify-between p-4 pt-0 gap-2">
               <Button asChild>
                 <Link
                   href={
@@ -151,12 +159,13 @@ export function Products({ products, link }: any) {
                 </Link>
               </Button>
               <Button
-                variant="default"
+                disabled={isPending}
+                variant="destructive"
                 className="w-full"
-                onClick={() => handleAddToCart(product)}
+                onClick={() => handleDeleteProduct(product.id)}
               >
-                <Plus className="mr-2 h-4 w-4" />
-                Add to Cart
+                {/* <Plus className="mr-2 h-4 w-4" /> */}
+                Delete
               </Button>
             </CardFooter>
           </Card>

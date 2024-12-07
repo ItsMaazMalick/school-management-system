@@ -50,3 +50,14 @@ export const getAllCategories = async () => {
     return null;
   }
 };
+
+export const deleteCategory = async (id: string) => {
+  try {
+    await prisma.category.delete({
+      where: { id },
+    });
+    return { success: "Record deleted successfully" };
+  } catch {
+    return { error: "Internal server error" };
+  }
+};

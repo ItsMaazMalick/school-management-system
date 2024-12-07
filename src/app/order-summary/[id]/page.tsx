@@ -40,7 +40,7 @@ export default async function OrderSummary({
           <CardContent>
             <div className="flex justify-center items-center">
               <QrCodePage
-                value={`http://localhost:3000/order-summary/${order.id}`}
+                value={`${process.env.BASE_URL}/order-summary/${order.id}`}
               />
             </div>
             <h3 className="text-xl font-semibold mb-4">Order Summary</h3>

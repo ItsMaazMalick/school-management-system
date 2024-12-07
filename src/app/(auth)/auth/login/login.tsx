@@ -6,10 +6,12 @@ import TextInput from "@/components/inputs/text-input";
 import { Form } from "@/components/ui/form";
 import { loginSchema } from "@/lib/schemas/login-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 export function LoginForm() {
+  const [isPending, startTransition] = useTransition();
   // 1. Define your form.
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -21,8 +23,10 @@ export function LoginForm() {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof loginSchema>) {
-    const response = await login(values);
-    console.log(response);
+    startTransition(async () => {
+      const response = await login(values);
+      console.log(response);
+    });
   }
 
   return (
@@ -43,7 +47,7 @@ export function LoginForm() {
         <div className="flex justify-center my-4">
           <FormSubmitButton
             title="Login"
-            loading={form.formState.isSubmitting}
+            loading={isPending}
             className="w-fit"
           />
         </div>
