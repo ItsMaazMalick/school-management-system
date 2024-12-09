@@ -8,7 +8,7 @@ export function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <aside
-      className={`bg-gradient-to-b from-primary-700 to-primary-500 text-secondary-200 w-[256px] h-[100dvh] p-4 ${
+      className={`bg-gradient-to-b from-primary-700 to-primary-500 text-white w-[256px] h-[100dvh] p-4 ${
         isOpen ? "block" : "hidden"
       } md:block`}
     >

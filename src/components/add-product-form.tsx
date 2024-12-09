@@ -10,13 +10,15 @@ import { Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { addProductSchema } from "@/lib/schemas/product-schema";
+import { UploadButton } from "@/lib/uploadthing";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 export function AddProductForm({ categories }: any) {
-  const [image, setImage] = useState<File | null | undefined>();
+  const [image, setImage] = useState<string | undefined>();
   // 1. Define your form.
   const form = useForm<z.infer<typeof addProductSchema>>({
     resolver: zodResolver(addProductSchema),
@@ -35,15 +37,11 @@ export function AddProductForm({ categories }: any) {
     }
 
     // Upload the image first.
-    const res = await uploadImage(image);
+    // const res = await uploadImage(image);
 
-    if (!res.success) {
-      return console.log("Image upload failed");
-    }
+    const response = await addProduct(values, image);
 
-    const response = await addProduct(values, res.result.secure_url);
-
-    console.log(res);
+    // console.log(res);
 
     console.log(response);
   }
@@ -51,7 +49,7 @@ export function AddProductForm({ categories }: any) {
     <div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="">
-          <div className="grid grid-cols-3 gap-4 p-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
             <SelectInput
               label="Category"
               name="category"
@@ -70,14 +68,33 @@ export function AddProductForm({ categories }: any) {
               type="number"
               control={form.control}
             />
-            <div>
-              <Label>Product Image</Label>
-              <Input
-                className="mt-[8px]"
-                placeholder="Upload File"
-                type="file"
-                onChange={(e) => setImage(e.target.files?.[0])}
+
+            <div className="relative h-[150px]">
+              <UploadButton
+                className="w-full mt-8 z-50"
+                endpoint="imageUploader"
+                onClientUploadComplete={(res) => {
+                  setImage(res[0]?.url);
+                  // Do something with the response
+                  console.log("Files: ", res);
+                  alert("Upload Completed");
+                }}
+                onUploadError={(error: Error) => {
+                  // Do something with the error.
+                  alert(`ERROR! ${error.message}`);
+                }}
               />
+              {image && (
+                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -z-10 w-full brightness-75">
+                  <Image
+                    src={image}
+                    alt="Image"
+                    width={1000}
+                    height={1000}
+                    className="w-full h-[150px] object-cover rounded-md"
+                  />
+                </div>
+              )}
             </div>
 
             <TextInput label="Storage" name="storage" control={form.control} />
