@@ -43,7 +43,7 @@ export default function SelectInput({
           >
             <FormControl>
               <SelectTrigger>
-                <SelectValue placeholder={`Select ${label}`} />
+                <SelectValue placeholder={`${label}`} />
               </SelectTrigger>
             </FormControl>
             <SelectContent>

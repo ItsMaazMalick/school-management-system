@@ -30,12 +30,17 @@ export default async function ProductDetailPage({
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <Button variant="ghost" className="mb-4" asChild>
-        <Link href={"/dashboard/products"}>
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Products
-        </Link>
-      </Button>
+      <div className="flex flex-col lg:flex-row items-center justify-between">
+        <Button variant="ghost" className="mb-4" asChild>
+          <Link href={"/dashboard/products"}>
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Products
+          </Link>
+        </Button>
+        <Button variant="secondary" className="mb-4" asChild>
+          <Link href={`/dashboard/products/update/${product.id}`}>Update</Link>
+        </Button>
+      </div>
 
       <div className="grid md:grid-cols-2 gap-8">
         {/* Product Image */}

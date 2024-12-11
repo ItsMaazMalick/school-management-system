@@ -1,6 +1,6 @@
 "use client";
 
-import { addProduct } from "@/actions/product";
+import { addProduct, updateProduct } from "@/actions/product";
 import { uploadImage } from "@/actions/upload-image";
 import FormSubmitButton from "@/components/form-submit-button";
 import SelectInput from "@/components/inputs/select-input";
@@ -17,33 +17,30 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-export function AddProductForm({ categories }: any) {
+export function AddProductForm({ categories, product }: any) {
   const [image, setImage] = useState<string | undefined>();
   // 1. Define your form.
   const form = useForm<z.infer<typeof addProductSchema>>({
     resolver: zodResolver(addProductSchema),
     defaultValues: {
-      name: "",
-      price: 0,
-      description: "",
-      storage: "",
+      category: product?.categoryId || "",
+      name: product?.name || "",
+      price: product?.price || 0,
+      description: product?.description || "",
+      storage: product?.storage || "",
     },
   });
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof addProductSchema>) {
-    if (!image) {
-      throw new Error("Image is required...");
+    if (product) {
+      const response = await updateProduct(values, product, image);
+    } else {
+      if (!image) {
+        throw new Error("Image is required...");
+      }
+      const response = await addProduct(values, image);
     }
-
-    // Upload the image first.
-    // const res = await uploadImage(image);
-
-    const response = await addProduct(values, image);
-
-    // console.log(res);
-
-    console.log(response);
   }
   return (
     <div>
@@ -51,7 +48,7 @@ export function AddProductForm({ categories }: any) {
         <form onSubmit={form.handleSubmit(onSubmit)} className="">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
             <SelectInput
-              label="Category"
+              label={product ? product.category?.name : "Category"}
               name="category"
               control={form.control}
               items={categories}
@@ -77,14 +74,15 @@ export function AddProductForm({ categories }: any) {
                   setImage(res[0]?.url);
                   // Do something with the response
                   console.log("Files: ", res);
-                  alert("Upload Completed");
+                  // alert("Upload Completed");
                 }}
                 onUploadError={(error: Error) => {
                   // Do something with the error.
-                  alert(`ERROR! ${error.message}`);
+                  console.log(error.message);
+                  // alert(`ERROR! ${error.message}`);
                 }}
               />
-              {image && (
+              {image ? (
                 <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -z-10 w-full brightness-75">
                   <Image
                     src={image}
@@ -94,6 +92,18 @@ export function AddProductForm({ categories }: any) {
                     className="w-full h-[150px] object-cover rounded-md"
                   />
                 </div>
+              ) : (
+                product?.image && (
+                  <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -z-10 w-full brightness-75">
+                    <Image
+                      src={product.image}
+                      alt="Image"
+                      width={1000}
+                      height={1000}
+                      className="w-full h-[150px] object-cover rounded-md"
+                    />
+                  </div>
+                )
               )}
             </div>
 
@@ -108,7 +118,7 @@ export function AddProductForm({ categories }: any) {
           </div>
           <div className="flex justify-center">
             <FormSubmitButton
-              title="Add Product"
+              title={product ? "Update Product" : "Add Product"}
               loading={form.formState.isSubmitting}
               className="w-fit"
             />
