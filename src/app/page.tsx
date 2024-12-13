@@ -1,11 +1,10 @@
-import { getALLGlass } from "@/actions/glass";
 import { getAllProductWithCategoryName } from "@/actions/product";
-import { getAllRepairingProducts } from "@/actions/repairing";
-import { getALLScreens } from "@/actions/screen";
+
 import { UserNavbar } from "./user-navbar";
 import { Suspense } from "react";
 
 import dynamic from "next/dynamic";
+import { getALLServices } from "@/actions/service";
 
 const MobilePhonesAndServicesPage = dynamic(
   () => import("./mobile-and-repair"),
@@ -16,11 +15,9 @@ const MobilePhonesAndServicesPage = dynamic(
 
 export default async function Home() {
   const products = await getAllProductWithCategoryName();
-  const repairingProducts = await getAllRepairingProducts();
-  const glass = await getALLGlass();
-  const screens = await getALLScreens();
+  const services = await getALLServices();
 
-  if (!products || !repairingProducts || !glass || !screens) {
+  if (!products || !services) {
     return null;
   }
 
@@ -28,12 +25,7 @@ export default async function Home() {
     <div className="bg-gradient-to-r from-secondary-700 to-secondary-300">
       <UserNavbar className="sticky top-0 z-50" />
       <Suspense>
-        <MobilePhonesAndServicesPage
-          products={products}
-          repairingProducts={repairingProducts}
-          glass={glass}
-          screens={screens}
-        />
+        <MobilePhonesAndServicesPage products={products} services={services} />
       </Suspense>
     </div>
   );

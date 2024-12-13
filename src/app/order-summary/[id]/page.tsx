@@ -1,11 +1,9 @@
 import { getOrderById } from "@/actions/order";
 import { UserNavbar } from "@/app/user-navbar";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -68,7 +66,7 @@ export default async function OrderSummary({
                 {order?.orderStatus}
               </p>
             </div>
-            <table className="min-w-full border-collapse border border-gray-200">
+            <table className="min-w-full border-collapse border border-gray-200 text-sm">
               <thead>
                 <tr>
                   <th className="border-b px-4 py-2 text-left">Product</th>
@@ -93,7 +91,7 @@ export default async function OrderSummary({
                 {order?.OrderServicesItem?.map((item) => (
                   <tr key={item.id}>
                     <td className="border-b px-4 py-2">
-                      {item?.services?.name}
+                      {item?.services?.productName} - {item?.services?.type}
                     </td>
                     <td className="border-b px-4 py-2 text-center">
                       {item.quantity}

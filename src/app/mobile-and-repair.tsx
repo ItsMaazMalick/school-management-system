@@ -135,9 +135,7 @@ const mobileScreens = [
 
 export default function MobilePhonesAndServicesPage({
   products,
-  repairingProducts,
-  glass,
-  screens,
+  services,
 }: any) {
   const [phoneSearchTerm, setPhoneSearchTerm] = useState("");
   const [serviceSearchTerm, setServiceSearchTerm] = useState("");
@@ -155,16 +153,12 @@ export default function MobilePhonesAndServicesPage({
   }
 
   const handleAddToCart = (
-    item:
-      | (typeof phones)[0]
-      | (typeof repairServices)[0]
-      | (typeof backGlassServices)[0]
-      | (typeof mobileScreens)[0],
-    type: "mobile" | "repair" | "backglass" | "screen"
+    item: any,
+    type: "mobile" | "service" | "screen" | "battery" | "charging"
   ) => {
     addItem({
       id: item.id,
-      name: item.name,
+      name: `${type !== "mobile" && `${item.productName} - `}${item.name}`,
       price: item.price,
       type: type,
     });
@@ -256,45 +250,51 @@ export default function MobilePhonesAndServicesPage({
             />
           </div>
           <div className="my-4">
-            <p className="text-2xl font-bold text-center">Phone Parts</p>
+            <p className="text-2xl font-bold text-center">Services</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {repairingProducts?.map((service: any) => (
-              <Card
-                key={service.id}
-                className="flex flex-col shadow-lg transition-transform transform hover:scale-105"
-              >
-                <CardHeader>
-                  <Image
-                    src={"/images/repair-service.jpg"}
-                    alt={service.name}
-                    width={1000}
-                    height={1000}
-                    className="w-full h-48 object-contain rounded-t-lg"
-                  />
-                </CardHeader>
-                <CardContent className="flex-grow">
-                  <CardTitle className="mb-2">{service.name}</CardTitle>
-                  <Badge variant="secondary" className="mb-2">
-                    {/* <Tool className="mr-1 h-3 w-3" /> */}
-                    Repair Service
-                  </Badge>
-                </CardContent>
-                <CardFooter>
-                  <Button variant="default" className="w-full" asChild>
-                    <Link href={`/product/${service.slug}/repairing`}>
-                      View Services
-                    </Link>
-                  </Button>
-                </CardFooter>
-              </Card>
-            ))}
+            {services
+              ?.filter((service: any) => service.type === "service")
+              .map((service: any) => (
+                <Card
+                  key={service.id}
+                  className="flex flex-col shadow-lg transition-transform transform hover:scale-105"
+                >
+                  <CardHeader>
+                    <Image
+                      src={"/images/repair-service.jpg"}
+                      alt={service.name}
+                      width={1000}
+                      height={1000}
+                      className="w-full h-48 object-contain rounded-t-lg"
+                    />
+                  </CardHeader>
+                  <CardContent className="flex-grow">
+                    <CardTitle className="mb-2">
+                      {service.productName}
+                    </CardTitle>
+                    <Badge variant="secondary" className="mb-2">
+                      {/* <Tool className="mr-1 h-3 w-3" /> */}
+                      Repair Service
+                    </Badge>
+                  </CardContent>
+                  <CardFooter>
+                    <Button
+                      variant="default"
+                      className="w-full"
+                      onClick={() => handleAddToCart(service, "service")}
+                    >
+                      Add to Cart
+                    </Button>
+                  </CardFooter>
+                </Card>
+              ))}
           </div>
-          {repairServices.length === 0 && (
+          {services.length === 0 && (
             <div className="text-center py-12">
               <Tool className="mx-auto h-12 w-12 text-gray-400" />
               <h3 className="mt-2 text-sm font-semibold text-gray-900">
-                No repair services found
+                No services found
               </h3>
               <p className="mt-1 text-sm text-gray-500">
                 Try adjusting your search to find what you&apos;re looking for.
@@ -302,44 +302,46 @@ export default function MobilePhonesAndServicesPage({
             </div>
           )}
           <div className="my-4">
-            <p className="text-2xl font-bold text-center">Back Glasses</p>
+            <p className="text-2xl font-bold text-center">Screens</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {glass?.map((gl: any) => (
-              <Card
-                key={gl.id}
-                className="flex flex-col shadow-lg transition-transform transform hover:scale-105"
-              >
-                <CardHeader>
-                  <Image
-                    src={"/images/repair-service.jpg"}
-                    alt={gl.name}
-                    width={1000}
-                    height={1000}
-                    className="w-full h-48 object-contain rounded-t-lg"
-                  />
-                </CardHeader>
-                <CardContent className="flex-grow">
-                  <CardTitle className="mb-2">{gl.name}</CardTitle>
-                  <Badge variant="secondary" className="mb-2">
-                    {/* <Layers className="mr-1 h-3 w-3" /> */}
-                    Back Glass
-                  </Badge>
-                  <p className="text-lg font-bold">${gl.price}</p>
-                </CardContent>
-                <CardFooter>
-                  <Button
-                    variant="default"
-                    className="w-full"
-                    onClick={() => handleAddToCart(gl, "backglass")}
-                  >
-                    Add to Cart
-                  </Button>
-                </CardFooter>
-              </Card>
-            ))}
+            {services
+              ?.filter((service: any) => service.type === "screen")
+              ?.map((gl: any) => (
+                <Card
+                  key={gl.id}
+                  className="flex flex-col shadow-lg transition-transform transform hover:scale-105"
+                >
+                  <CardHeader>
+                    <Image
+                      src={"/images/repair-service.jpg"}
+                      alt={gl.name}
+                      width={1000}
+                      height={1000}
+                      className="w-full h-48 object-contain rounded-t-lg"
+                    />
+                  </CardHeader>
+                  <CardContent className="flex-grow">
+                    <CardTitle className="mb-2">{gl.productName}</CardTitle>
+                    <Badge variant="secondary" className="mb-2">
+                      {/* <Layers className="mr-1 h-3 w-3" /> */}
+                      Back Glass
+                    </Badge>
+                    <p className="text-lg font-bold">${gl.price}</p>
+                  </CardContent>
+                  <CardFooter>
+                    <Button
+                      variant="default"
+                      className="w-full"
+                      onClick={() => handleAddToCart(gl, "screen")}
+                    >
+                      Add to Cart
+                    </Button>
+                  </CardFooter>
+                </Card>
+              ))}
           </div>
-          {glass.length === 0 && (
+          {services.length === 0 && (
             <div className="text-center py-12">
               <Layers className="mx-auto h-12 w-12 text-gray-400" />
               <h3 className="mt-2 text-sm font-semibold text-gray-900">
@@ -351,44 +353,97 @@ export default function MobilePhonesAndServicesPage({
             </div>
           )}
           <div className="my-4">
-            <p className="text-2xl font-bold text-center">Screens</p>
+            <p className="text-2xl font-bold text-center">Battery</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {screens?.map((screen: any) => (
-              <Card
-                key={screen.id}
-                className="flex flex-col shadow-lg transition-transform transform hover:scale-105"
-              >
-                <CardHeader>
-                  <Image
-                    src={"/images/repair-service.jpg"}
-                    alt={screen.name}
-                    width={1000}
-                    height={1000}
-                    className="w-full h-48 object-contain rounded-t-lg"
-                  />
-                </CardHeader>
-                <CardContent className="flex-grow">
-                  <CardTitle className="mb-2">{screen.name}</CardTitle>
-                  <Badge variant="secondary" className="mb-2">
-                    {/* <Monitor className="mr-1 h-3 w-3" /> */}
-                    Mobile Screen
-                  </Badge>
-                  <p className="text-lg font-bold">${screen.price}</p>
-                </CardContent>
-                <CardFooter>
-                  <Button
-                    variant="default"
-                    className="w-full"
-                    onClick={() => handleAddToCart(screen, "screen")}
-                  >
-                    Add to Cart
-                  </Button>
-                </CardFooter>
-              </Card>
-            ))}
+            {services
+              ?.filter((service: any) => service.type === "battery")
+              ?.map((screen: any) => (
+                <Card
+                  key={screen.id}
+                  className="flex flex-col shadow-lg transition-transform transform hover:scale-105"
+                >
+                  <CardHeader>
+                    <Image
+                      src={"/images/repair-service.jpg"}
+                      alt={screen.name}
+                      width={1000}
+                      height={1000}
+                      className="w-full h-48 object-contain rounded-t-lg"
+                    />
+                  </CardHeader>
+                  <CardContent className="flex-grow">
+                    <CardTitle className="mb-2">{screen.productName}</CardTitle>
+                    <Badge variant="secondary" className="mb-2">
+                      {/* <Monitor className="mr-1 h-3 w-3" /> */}
+                      Mobile Screen
+                    </Badge>
+                    <p className="text-lg font-bold">${screen.price}</p>
+                  </CardContent>
+                  <CardFooter>
+                    <Button
+                      variant="default"
+                      className="w-full"
+                      onClick={() => handleAddToCart(screen, "battery")}
+                    >
+                      Add to Cart
+                    </Button>
+                  </CardFooter>
+                </Card>
+              ))}
           </div>
-          {screens.length === 0 && (
+          {services.length === 0 && (
+            <div className="text-center py-12">
+              <Monitor className="mx-auto h-12 w-12 text-gray-400" />
+              <h3 className="mt-2 text-sm font-semibold text-gray-900">
+                No mobile screens found
+              </h3>
+              <p className="mt-1 text-sm text-gray-500">
+                Try adjusting your search to find what you&apos;re looking for.
+              </p>
+            </div>
+          )}
+          <div className="my-4">
+            <p className="text-2xl font-bold text-center">Charging Port</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {services
+              ?.filter((service: any) => service.type === "charging")
+              ?.map((screen: any) => (
+                <Card
+                  key={screen.id}
+                  className="flex flex-col shadow-lg transition-transform transform hover:scale-105"
+                >
+                  <CardHeader>
+                    <Image
+                      src={"/images/repair-service.jpg"}
+                      alt={screen.name}
+                      width={1000}
+                      height={1000}
+                      className="w-full h-48 object-contain rounded-t-lg"
+                    />
+                  </CardHeader>
+                  <CardContent className="flex-grow">
+                    <CardTitle className="mb-2">{screen.productName}</CardTitle>
+                    <Badge variant="secondary" className="mb-2">
+                      {/* <Monitor className="mr-1 h-3 w-3" /> */}
+                      Mobile Screen
+                    </Badge>
+                    <p className="text-lg font-bold">${screen.price}</p>
+                  </CardContent>
+                  <CardFooter>
+                    <Button
+                      variant="default"
+                      className="w-full"
+                      onClick={() => handleAddToCart(screen, "charging")}
+                    >
+                      Add to Cart
+                    </Button>
+                  </CardFooter>
+                </Card>
+              ))}
+          </div>
+          {services.length === 0 && (
             <div className="text-center py-12">
               <Monitor className="mx-auto h-12 w-12 text-gray-400" />
               <h3 className="mt-2 text-sm font-semibold text-gray-900">

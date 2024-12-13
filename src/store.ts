@@ -1,7 +1,12 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-export type ProductType = "mobile" | "repair" | "backglass" | "screen";
+export type ProductType =
+  | "mobile"
+  | "service"
+  | "screen"
+  | "battery"
+  | "charging";
 
 export type CartItem = {
   id: number;

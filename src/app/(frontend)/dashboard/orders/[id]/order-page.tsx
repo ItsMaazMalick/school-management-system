@@ -159,7 +159,7 @@ export function OrderPage({ order }: any) {
                   <TableCell className="font-medium">
                     <div className="flex items-center">
                       <Tool className="mr-2 h-4 w-4" />
-                      {item.services.name}
+                      {item.services.productName} - {item.services.type}
                     </div>
                   </TableCell>
                   <TableCell>{item.quantity}</TableCell>

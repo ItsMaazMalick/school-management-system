@@ -2,6 +2,7 @@
 
 import prisma from "@/lib/db";
 import { sendEmail } from "@/lib/send-email";
+import { ProductType } from "@/store";
 import { revalidatePath } from "next/cache";
 
 interface CartItem {
@@ -9,7 +10,7 @@ interface CartItem {
   name: string;
   price: number;
   quantity: number;
-  type: "mobile" | "repair" | "backglass" | "screen";
+  type: ProductType;
 }
 
 interface CreateOrderValues {
@@ -48,12 +49,8 @@ export async function createOrder(values: CreateOrderValues) {
       (item: any) => item.type === "mobile"
     );
 
-    const extra = values.cartItems.filter(
-      (item: any) => item.type === "backglass" || item.type === "screen"
-    );
-
-    const repairItems = values.cartItems.filter(
-      (item: any) => item.type === "repair"
+    const services = values.cartItems.filter(
+      (item: any) => item.type !== "mobile"
     );
 
     // 6. Create order items for mobile products
@@ -74,9 +71,9 @@ export async function createOrder(values: CreateOrderValues) {
     console.log("Hello1");
 
     // 7. Create order services for repair services
-    if (repairItems.length > 0) {
+    if (services.length > 0) {
       await prisma.orderServicesItem.createMany({
-        data: repairItems.map((item: any) => ({
+        data: services.map((item: any) => ({
           orderId: orderId,
           serviceId: item.id, // Assuming the `id` refers to a `RepairServices`'s ObjectId
           quantity: item.quantity,
@@ -84,25 +81,9 @@ export async function createOrder(values: CreateOrderValues) {
         })),
       });
       console.log(
-        `Created ${repairItems.length} order services for repair services.`
+        `Created ${services.length} order services for repair services.`
       );
     }
-
-    if (extra.length > 0) {
-      await prisma.orderServicesItem.createMany({
-        data: extra.map((item: any) => ({
-          orderId: orderId,
-          serviceId: item.id,
-          name: item.name,
-          quantity: item.quantity,
-          // price: item.price,
-        })),
-      });
-      console.log(
-        `Created ${orderItems.length} order items for mobile products.`
-      );
-    }
-
     if (values.email) {
       const res = await sendEmail({ email: values.email, data: { ...values } });
     }
