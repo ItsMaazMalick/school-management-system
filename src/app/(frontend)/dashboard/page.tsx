@@ -192,15 +192,20 @@ export default async function DashboardPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {services?.map((service: any) => (
-                    <tr key={service.id} className="border-b">
-                      <td className="p-2">{service.name}</td>
-                      <td className="p-2">{service.Product?.name}</td>
-                      <td className="p-2">${service.price}</td>
-                      <td className="p-2">{service.description}</td>
-                      <td className="p-2">{service.estimatedTime}</td>
-                      <td className="p-2">
-                        {/* <span
+                  <p className="text-xl text-primary-500 font-bold my-4">
+                    Apple
+                  </p>
+                  {services
+                    ?.filter((service) => service.brandName === "Apple")
+                    .map((service: any) => (
+                      <tr key={service.id} className="border-b">
+                        <td className="p-2">{service.name}</td>
+                        <td className="p-2">{service.productName}</td>
+                        <td className="p-2">${service.price}</td>
+                        <td className="p-2">{service.description}</td>
+                        <td className="p-2">{service.estimatedTime}</td>
+                        <td className="p-2">
+                          {/* <span
                           className={`px-2 py-1 rounded-full text-xs ${
                             order.status === "Completed"
                               ? "bg-green-100 text-green-800"
@@ -211,9 +216,63 @@ export default async function DashboardPage() {
                         >
                           {order.status}
                         </span> */}
-                      </td>
-                    </tr>
-                  ))}
+                        </td>
+                      </tr>
+                    ))}
+                  <p className="text-xl text-primary-500 font-bold my-4">
+                    Samsung
+                  </p>
+                  {services
+                    ?.filter((service) => service.brandName === "Samsung")
+                    .map((service: any) => (
+                      <tr key={service.id} className="border-b">
+                        <td className="p-2">{service.name}</td>
+                        <td className="p-2">{service.productName}</td>
+                        <td className="p-2">${service.price}</td>
+                        <td className="p-2">{service.description}</td>
+                        <td className="p-2">{service.estimatedTime}</td>
+                        <td className="p-2">
+                          {/* <span
+                          className={`px-2 py-1 rounded-full text-xs ${
+                            order.status === "Completed"
+                              ? "bg-green-100 text-green-800"
+                              : order.status === "Processing"
+                              ? "bg-yellow-100 text-yellow-800"
+                              : "bg-blue-100 text-blue-800"
+                          }`}
+                        >
+                          {order.status}
+                        </span> */}
+                        </td>
+                      </tr>
+                    ))}
+                  <p className="text-xl text-primary-500 font-bold my-4">
+                    Motorola
+                  </p>
+                  {services
+                    ?.filter((service) => service.brandName === "Motorola")
+                    .map((service: any) => (
+                      <tr key={service.id} className="border-b">
+                        <td className="p-2">{service.name}</td>
+                        <td className="p-2">{service.productName}</td>
+                        <td className="p-2">${service.price}</td>
+                        <td className="p-2">{service.description}</td>
+                        <td className="p-2">{service.estimatedTime}</td>
+                        <td className="p-2">
+                          {/* <span
+                          className={`px-2 py-1 rounded-full text-xs ${
+                            order.status === "Completed"
+                              ? "bg-green-100 text-green-800"
+                              : order.status === "Processing"
+                              ? "bg-yellow-100 text-yellow-800"
+                              : "bg-blue-100 text-blue-800"
+                          }`}
+                        >
+                          {order.status}
+                        </span> */}
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>

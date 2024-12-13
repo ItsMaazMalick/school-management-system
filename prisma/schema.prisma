@@ -53,45 +53,32 @@ model Product {
   @@map("products")
 }
 
-model RepairProduct {
-  id             String           @id @default(auto()) @map("_id") @db.ObjectId
-  name           String
-  slug           String           @unique
-  RepairServices RepairServices[]
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-
-  @@map("repairproducts")
-}
-
 model RepairServices {
   id                String              @id @default(auto()) @map("_id") @db.ObjectId
+  brandName         String
+  categoryName      String
+  productName       String
   name              String
   price             Float
   description       String?
   estimatedTime     String?
   type              RepairService
-  Product           RepairProduct?      @relation(fields: [productId], references: [id])
-  productId         String?             @db.ObjectId
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @updatedAt
   OrderServicesItem OrderServicesItem[]
-  variants          Variant[]
 
   @@map("repairservices")
 }
 
 model Variant {
-  id               String          @id @default(auto()) @map("_id") @db.ObjectId
-  name             String
-  price            Float
-  discount         Int?
-  product          Product?        @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId        String?         @db.ObjectId
-  createdAt        DateTime        @default(now())
-  updatedAt        DateTime        @updatedAt
-  RepairServices   RepairServices? @relation(fields: [repairServicesId], references: [id], onDelete: Cascade)
-  repairServicesId String?         @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  price     Float
+  discount  Int?
+  product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String?  @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("variants")
 }
@@ -145,7 +132,8 @@ enum OrderStatus {
 }
 
 enum RepairService {
-  basic
   screen
-  glass
+  battery
+  charging
+  service
 }
