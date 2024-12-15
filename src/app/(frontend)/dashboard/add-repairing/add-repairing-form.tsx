@@ -1,27 +1,24 @@
 "use client";
 import { useState } from "react";
-import { repairingData, services } from "@/constants/repairing-data";
 import { addService } from "@/actions/service";
+import { services } from "@/constants/repairing-data";
 
-// Define types for the structure of repairingData
-interface Product {
-  id: number;
+// Define types for the structure of the data coming from the backend
+interface RepairProduct {
+  id: string;
   name: string;
-  slug: string;
 }
 
-interface Category {
-  id: number;
+interface RepairCategory {
+  id: string;
   name: string;
-  slug: string;
-  products: Product[];
+  repairProducts: RepairProduct[];
 }
 
-interface Brand {
-  id: number;
+interface RepairBrand {
+  id: string;
   name: string;
-  slug: string;
-  categories: Category[];
+  repairCategories: RepairCategory[];
 }
 
 export type Service = {
@@ -29,20 +26,21 @@ export type Service = {
   name: string;
 };
 
-export function AddRepairingForm() {
+export function AddRepairingForm({ brands }: { brands: RepairBrand[] }) {
   // States to store the selected brand, category, product, and services
-  const [selectedBrand, setSelectedBrand] = useState<Brand | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+  const [selectedBrand, setSelectedBrand] = useState<RepairBrand | null>(null);
+  const [selectedCategory, setSelectedCategory] =
+    useState<RepairCategory | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<RepairProduct | null>(
     null
   );
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [selectedServices, setSelectedServices] = useState<number[]>([]);
   const [servicePrices, setServicePrices] = useState<{ [key: number]: number }>(
     {}
   );
 
   // Handle brand click
-  const handleBrandClick = (brand: Brand) => {
+  const handleBrandClick = (brand: RepairBrand) => {
     setSelectedBrand(brand);
     setSelectedCategory(null);
     setSelectedProduct(null);
@@ -51,7 +49,7 @@ export function AddRepairingForm() {
   };
 
   // Handle category click
-  const handleCategoryClick = (category: Category) => {
+  const handleCategoryClick = (category: RepairCategory) => {
     setSelectedCategory(category);
     setSelectedProduct(null);
     setSelectedServices([]);
@@ -59,7 +57,7 @@ export function AddRepairingForm() {
   };
 
   // Handle product click
-  const handleProductClick = (product: Product) => {
+  const handleProductClick = (product: RepairProduct) => {
     setSelectedProduct(product);
     setSelectedServices([]);
     setServicePrices({});
@@ -87,6 +85,7 @@ export function AddRepairingForm() {
     if (selectedProduct && selectedBrand && selectedCategory) {
       const serviceData = selectedServices
         .map((serviceId) => {
+          // Find the service in the static list or dynamically generated list
           const service = services.find((service) => service.id === serviceId);
 
           // If no service is found, skip this entry
@@ -95,8 +94,7 @@ export function AddRepairingForm() {
           }
 
           return {
-            brandName: selectedBrand.name,
-            categoryName: selectedCategory.name,
+            productId: selectedProduct.id,
             service: service, // We know it's defined now
             price: servicePrices[serviceId],
           };
@@ -108,7 +106,7 @@ export function AddRepairingForm() {
 
       if (serviceData.length > 0) {
         const res = await addService({
-          productName: selectedProduct.name,
+          productId: selectedProduct.id,
           services: serviceData as any, // Type assertion to bypass TypeScript check
         });
         console.log(res);
@@ -124,8 +122,8 @@ export function AddRepairingForm() {
 
       {/* Show brands (only when no brand is selected) */}
       {!selectedBrand && !selectedCategory && !selectedProduct ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {repairingData.map((brand) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {brands?.map((brand) => (
             <div
               key={brand.id}
               className="bg-gradient-to-br from-primary-400 to-secondary-400 h-[150px] flex justify-center items-center text-xl font-bold text-white rounded-md hover:scale-105 duration-300 transition-all cursor-pointer"
@@ -151,8 +149,8 @@ export function AddRepairingForm() {
             {selectedBrand.name} Categories
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {selectedBrand.categories.map((category) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {selectedBrand.repairCategories.map((category) => (
               <div
                 key={category.id}
                 className="bg-gradient-to-br from-primary-400 to-secondary-400 h-[150px] flex justify-center items-center text-xl font-bold text-white rounded-md hover:scale-105 duration-300 transition-all cursor-pointer"
@@ -179,8 +177,8 @@ export function AddRepairingForm() {
             {selectedCategory.name} Products
           </h3>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {selectedCategory.products.map((product) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {selectedCategory.repairProducts.map((product) => (
               <div
                 key={product.id}
                 className="bg-gradient-to-br from-primary-400 to-secondary-400 h-[150px] flex justify-center items-center text-xl font-bold text-white rounded-md hover:scale-105 duration-300 transition-all cursor-pointer"
@@ -207,7 +205,7 @@ export function AddRepairingForm() {
             Add Services for {selectedProduct.name}
           </h3>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {services.map((service) => (
               <div
                 key={service.id}

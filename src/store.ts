@@ -25,6 +25,7 @@ interface CartStore {
   clearCart: () => void;
   getTotalItems: () => number;
   getTotalPrice: () => number;
+  updateItemPrice: (id: number, newPrice: number) => void;
 }
 
 export const useCartStore = create<CartStore>()(
@@ -75,6 +76,13 @@ export const useCartStore = create<CartStore>()(
           (total, item) => total + item.price * item.quantity,
           0
         ),
+      updateItemPrice: (id, newPrice) => {
+        set((state) => ({
+          items: state.items.map((item) =>
+            item.id === id ? { ...item, price: newPrice } : item
+          ),
+        }));
+      },
     }),
     {
       name: "cart-storage",

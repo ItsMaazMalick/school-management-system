@@ -1,5 +1,8 @@
 import { getAllProductWithCategoryName } from "@/actions/product";
-import { getALLServices } from "@/actions/service";
+import {
+  getALLRepairingBrandsWithProduct,
+  getALLServices,
+} from "@/actions/service";
 import { Suspense } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart3 } from "lucide-react";
@@ -12,6 +15,7 @@ import {
   totalOrdersLength,
 } from "@/actions/order";
 import Link from "next/link";
+import { RepairingPos } from "./repairing-pos";
 // import dynamic from "next/dynamic";
 
 // const Dashboard = dynamic(() => import("../../../components/Dashboard"), {
@@ -25,9 +29,12 @@ export default async function DashboardPage() {
   const ordersLength = await totalOrdersLength();
   const pendingOrders = await getPendingOrdersLength();
   const paidOrders = await getPaidOrdersLength();
+  const brands = await getALLRepairingBrandsWithProduct();
+  const safeBrands = brands ?? [];
 
   return (
     <>
+      <RepairingPos brands={safeBrands} />
       {/* TOP CARDS */}
       <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 p-4 gap-4">
         <Card className="bg-gradient-to-br from-primary-700 to-primary-400 text-primary-foreground shadow-md">
@@ -174,111 +181,7 @@ export default async function DashboardPage() {
         </Card>
       </div>
       {/* SERVICES */}
-      <div className="p-4">
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Services</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b">
-                    <th className="text-left p-2">Service Name</th>
-                    <th className="text-left p-2">Product Name</th>
-                    <th className="text-left p-2">Price</th>
-                    <th className="text-left p-2">Description</th>
-                    <th className="text-left p-2">Estimated Time</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <p className="text-xl text-primary-500 font-bold my-4">
-                    Apple
-                  </p>
-                  {services
-                    ?.filter((service) => service.brandName === "Apple")
-                    .map((service: any) => (
-                      <tr key={service.id} className="border-b">
-                        <td className="p-2">{service.name}</td>
-                        <td className="p-2">{service.productName}</td>
-                        <td className="p-2">${service.price}</td>
-                        <td className="p-2">{service.description}</td>
-                        <td className="p-2">{service.estimatedTime}</td>
-                        <td className="p-2">
-                          {/* <span
-                          className={`px-2 py-1 rounded-full text-xs ${
-                            order.status === "Completed"
-                              ? "bg-green-100 text-green-800"
-                              : order.status === "Processing"
-                              ? "bg-yellow-100 text-yellow-800"
-                              : "bg-blue-100 text-blue-800"
-                          }`}
-                        >
-                          {order.status}
-                        </span> */}
-                        </td>
-                      </tr>
-                    ))}
-                  <p className="text-xl text-primary-500 font-bold my-4">
-                    Samsung
-                  </p>
-                  {services
-                    ?.filter((service) => service.brandName === "Samsung")
-                    .map((service: any) => (
-                      <tr key={service.id} className="border-b">
-                        <td className="p-2">{service.name}</td>
-                        <td className="p-2">{service.productName}</td>
-                        <td className="p-2">${service.price}</td>
-                        <td className="p-2">{service.description}</td>
-                        <td className="p-2">{service.estimatedTime}</td>
-                        <td className="p-2">
-                          {/* <span
-                          className={`px-2 py-1 rounded-full text-xs ${
-                            order.status === "Completed"
-                              ? "bg-green-100 text-green-800"
-                              : order.status === "Processing"
-                              ? "bg-yellow-100 text-yellow-800"
-                              : "bg-blue-100 text-blue-800"
-                          }`}
-                        >
-                          {order.status}
-                        </span> */}
-                        </td>
-                      </tr>
-                    ))}
-                  <p className="text-xl text-primary-500 font-bold my-4">
-                    Motorola
-                  </p>
-                  {services
-                    ?.filter((service) => service.brandName === "Motorola")
-                    .map((service: any) => (
-                      <tr key={service.id} className="border-b">
-                        <td className="p-2">{service.name}</td>
-                        <td className="p-2">{service.productName}</td>
-                        <td className="p-2">${service.price}</td>
-                        <td className="p-2">{service.description}</td>
-                        <td className="p-2">{service.estimatedTime}</td>
-                        <td className="p-2">
-                          {/* <span
-                          className={`px-2 py-1 rounded-full text-xs ${
-                            order.status === "Completed"
-                              ? "bg-green-100 text-green-800"
-                              : order.status === "Processing"
-                              ? "bg-yellow-100 text-yellow-800"
-                              : "bg-blue-100 text-blue-800"
-                          }`}
-                        >
-                          {order.status}
-                        </span> */}
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+      {/*  */}
       {/* POPULAR PRODUCTS */}
       {/* <div className="p-4">
         <Card>

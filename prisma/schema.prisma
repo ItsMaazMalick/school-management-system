@@ -48,24 +48,55 @@ model Product {
   categoryId  String      @db.ObjectId
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
-  OrderItem   OrderItem[]
+  orderItem   OrderItem[]
 
   @@map("products")
 }
 
+model RepairBrand {
+  id               String           @id @default(auto()) @map("_id") @db.ObjectId
+  name             String
+  repairCategories RepairCategory[]
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  @@map("repairbrand")
+}
+
+model RepairCategory {
+  id             String          @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  repairBrand    RepairBrand     @relation(fields: [repairBrandId], references: [id])
+  repairBrandId  String          @db.ObjectId
+  repairProducts RepairProduct[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  @@map("repaircategory")
+}
+
+model RepairProduct {
+  id               String           @id @default(auto()) @map("_id") @db.ObjectId
+  name             String
+  repairCategory   RepairCategory   @relation(fields: [repairCategoryId], references: [id])
+  repairCategoryId String           @db.ObjectId
+  repairServices   RepairServices[]
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  @@map("repairproduct")
+}
+
 model RepairServices {
   id                String              @id @default(auto()) @map("_id") @db.ObjectId
-  brandName         String
-  categoryName      String
-  productName       String
   name              String
   price             Float
-  description       String?
-  estimatedTime     String?
   type              RepairService
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @updatedAt
-  OrderServicesItem OrderServicesItem[]
+  repairProduct     RepairProduct       @relation(fields: [repairProductId], references: [id])
+  repairProductId   String              @db.ObjectId
+  orderServicesItem OrderServicesItem[]
 
   @@map("repairservices")
 }
@@ -92,7 +123,7 @@ model Order {
   price             Float
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @updatedAt
-  OrderServicesItem OrderServicesItem[]
+  orderServicesItem OrderServicesItem[]
   orderProducts     OrderItem[]
 
   @@map("orders")
@@ -103,20 +134,21 @@ model OrderItem {
   products  Product? @relation(fields: [productId], references: [id])
   productId String?  @db.ObjectId
   quantity  Int
-  Order     Order    @relation(fields: [orderId], references: [id])
+  order     Order    @relation(fields: [orderId], references: [id])
   orderId   String   @db.ObjectId
 
   @@map("orderitems")
 }
 
 model OrderServicesItem {
-  id        String         @id @default(auto()) @map("_id") @db.ObjectId
-  name      String?
-  services  RepairServices @relation(fields: [serviceId], references: [id])
-  serviceId String         @db.ObjectId
-  orderId   String         @db.ObjectId
-  order     Order          @relation(fields: [orderId], references: [id])
-  quantity  Int
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  orderId  String @db.ObjectId
+  order    Order  @relation(fields: [orderId], references: [id])
+  quantity Int
+
+  repairServices   RepairServices @relation(fields: [repairServicesId], references: [id])
+  repairServicesId String         @db.ObjectId
 
   @@map("orderservicesitems")
 }

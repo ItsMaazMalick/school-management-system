@@ -154,17 +154,18 @@ export function OrderPage({ order }: any) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {order.OrderServicesItem?.map((item: any) => (
+              {order.orderServicesItem?.map((item: any) => (
                 <TableRow key={item.id}>
                   <TableCell className="font-medium">
                     <div className="flex items-center">
                       <Tool className="mr-2 h-4 w-4" />
-                      {item.services.productName} - {item.services.type}
+                      {item.repairServices.repairProduct.name} -{" "}
+                      {item.repairServices.name}
                     </div>
                   </TableCell>
                   <TableCell>{item.quantity}</TableCell>
                   <TableCell className="text-right">
-                    ${item.services.price.toFixed(2)}
+                    ${item.repairServices.price}
                   </TableCell>
                 </TableRow>
               ))}

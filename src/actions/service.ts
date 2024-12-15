@@ -8,28 +8,29 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 
 export const addService = async ({
-  productName,
+  productId,
   services,
 }: {
-  productName: string;
+  productId: string;
   services: {
-    brandName: string;
-    categoryName: string;
+    productId: string;
     service: { name: string; type: string };
     price: number;
   }[]; // serviceId and price from the front end
 }) => {
   try {
     // Prepare data to insert into the database
+    const existingProduct = await prisma.repairProduct.findUnique({
+      where: { id: productId },
+    });
+    if (!existingProduct) {
+      return { error: "No product found" };
+    }
 
-    // Insert multiple records into the 'repairServices' table
     await prisma.repairServices.createMany({
       data: services.map((service) => ({
-        productName: productName,
-        brandName: service.brandName,
-        categoryName: service.categoryName,
-        name: service.service.name, // Store the serviceId to link the service
-        price: service.price, // Store the price
+        name: service.service.name,
+        price: service.price,
         type:
           service.service.type === "screen"
             ? "screen"
@@ -38,6 +39,7 @@ export const addService = async ({
             : service.service.type === "charging"
             ? "charging"
             : "service",
+        repairProductId: productId,
       })),
     });
 
@@ -69,6 +71,27 @@ export async function getALLServices() {
   try {
     const services = await prisma.repairServices.findMany();
     return services;
+  } catch {
+    return null;
+  }
+}
+
+export async function getALLRepairingBrandsWithProduct() {
+  try {
+    const brandsWithProducts = await prisma.repairBrand.findMany({
+      include: {
+        repairCategories: {
+          include: {
+            repairProducts: {
+              include: {
+                repairServices: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    return brandsWithProducts;
   } catch {
     return null;
   }

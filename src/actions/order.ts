@@ -68,16 +68,14 @@ export async function createOrder(values: CreateOrderValues) {
       );
     }
 
-    console.log("Hello1");
-
     // 7. Create order services for repair services
     if (services.length > 0) {
       await prisma.orderServicesItem.createMany({
         data: services.map((item: any) => ({
           orderId: orderId,
-          serviceId: item.id, // Assuming the `id` refers to a `RepairServices`'s ObjectId
           quantity: item.quantity,
           //   price: item.price,
+          repairServicesId: item.id,
         })),
       });
       console.log(
@@ -111,6 +109,7 @@ export async function getLast10Orders() {
         createdAt: "desc",
       },
     });
+
     return orders;
   } catch {
     return null;
@@ -127,9 +126,13 @@ export async function getOrderById(id: string) {
             products: true,
           },
         },
-        OrderServicesItem: {
+        orderServicesItem: {
           include: {
-            services: true,
+            repairServices: {
+              include: {
+                repairProduct: true,
+              },
+            },
           },
         },
       },
