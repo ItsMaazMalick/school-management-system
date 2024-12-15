@@ -3,6 +3,7 @@
 import prisma from "@/lib/db";
 import { sendEmail } from "@/lib/send-email";
 import { ProductType } from "@/store";
+import { error } from "console";
 import { revalidatePath } from "next/cache";
 
 interface CartItem {

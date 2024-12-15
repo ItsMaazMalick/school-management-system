@@ -53,33 +53,37 @@ export function RepairingPos({ brands }: { brands: RepairBrand[] }) {
                 </tr>
               </thead>
               <tbody>
-                {items?.map((product: any) => (
-                  <tr key={product.id} className="border-b">
-                    <td className="p-2 flex items-center gap-4">
-                      <p
-                        onClick={() => removeItem(product.id)}
-                        className="p-1 bg-primary-500 rounded-full cursor-pointer text-white"
-                      >
-                        <X size={16} />
-                      </p>
-                      <p>{product.name}</p>
-                    </td>
-                    <td className="p-2">{product.quantity}</td>
-                    <td className="p-2">${product.price}</td>
-                    <td className="p-2">{product.quantity * product.price}</td>
-                    <td>
-                      <Input
-                        onChange={(e) =>
-                          handlePriceChange(product.id, e.target.value)
-                        }
-                        value={product.price}
-                        placeholder="Price"
-                        className="w-[80px]"
-                        type="number"
-                      />
-                    </td>
-                  </tr>
-                ))}
+                {items
+                  ?.filter((item) => item.type !== "mobile")
+                  .map((product: any) => (
+                    <tr key={product.id} className="border-b">
+                      <td className="p-2 flex items-center gap-4">
+                        <p
+                          onClick={() => removeItem(product.id)}
+                          className="p-1 bg-primary-500 rounded-full cursor-pointer text-white"
+                        >
+                          <X size={16} />
+                        </p>
+                        <p>{product.name}</p>
+                      </td>
+                      <td className="p-2">{product.quantity}</td>
+                      <td className="p-2">${product.price}</td>
+                      <td className="p-2">
+                        {product.quantity * product.price}
+                      </td>
+                      <td>
+                        <Input
+                          onChange={(e) =>
+                            handlePriceChange(product.id, e.target.value)
+                          }
+                          value={product.price}
+                          placeholder="Price"
+                          className="w-[80px]"
+                          type="number"
+                        />
+                      </td>
+                    </tr>
+                  ))}
                 <tr className="border-t font-bold">
                   <td className="">Total</td>
                   <td></td>

@@ -17,6 +17,7 @@ export default async function OrderSummary({
 }) {
   // Fetch the order data using the provided order ID
   const order = await getOrderById(params?.id);
+
   if (!order) {
     // If order doesn't exist, redirect to home page
     return redirect("/");
@@ -88,16 +89,17 @@ export default async function OrderSummary({
                     </td>
                   </tr>
                 ))}
-                {order?.OrderServicesItem?.map((item) => (
+                {order?.orderServicesItem?.map((item) => (
                   <tr key={item.id}>
                     <td className="border-b px-4 py-2">
-                      {item?.services?.productName} - {item?.services?.type}
+                      {item?.repairServices?.repairProduct.name} -{" "}
+                      {item?.repairServices?.name}
                     </td>
                     <td className="border-b px-4 py-2 text-center">
                       {item.quantity}
                     </td>
                     <td className="border-b px-4 py-2 text-right">
-                      ${item?.services?.price}
+                      ${item?.repairServices?.price}
                     </td>
                   </tr>
                 ))}
