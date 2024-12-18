@@ -37,46 +37,54 @@ export default async function DashboardPage() {
       <RepairingPos brands={safeBrands} />
       {/* TOP CARDS */}
       <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 p-4 gap-4">
+        <Link href="/dashboard/orders">
+          <Card className="bg-gradient-to-br from-primary-700 to-primary-400 text-primary-foreground shadow-md">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Total Orders
+              </CardTitle>
+              <BarChart3 className="h-4 w-4" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{ordersLength || 0}</div>
+              {/* <p className="text-xs text-secondary-100">+20.1% from last month</p> */}
+            </CardContent>
+          </Card>
+        </Link>
+        <Link href="/dashboard/paid-orders">
+          <Card className="bg-gradient-to-br from-primary-700 to-primary-400 text-primary-foreground shadow-md">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Paid Orders</CardTitle>
+              <BarChart3 className="h-4 w-4" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{paidOrders || 0}</div>
+              {/* <p className="text-xs text-secondary-100">+20.1% from last month</p> */}
+            </CardContent>
+          </Card>
+        </Link>
+        <Link href="/dashboard/pending-orders">
+          <Card className="bg-gradient-to-br from-primary-700 to-primary-400 text-primary-foreground shadow-md">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Pending Orders
+              </CardTitle>
+              <BarChart3 className="h-4 w-4" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{pendingOrders || 0}</div>
+              {/* <p className="text-xs text-secondary-100">+20.1% from last month</p> */}
+            </CardContent>
+          </Card>
+        </Link>
         <Card className="bg-gradient-to-br from-primary-700 to-primary-400 text-primary-foreground shadow-md">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Orders</CardTitle>
+            <CardTitle className="text-sm font-medium"></CardTitle>
             <BarChart3 className="h-4 w-4" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{ordersLength || 0}</div>
+            <div className="text-2xl font-bold"></div>
             {/* <p className="text-xs text-secondary-100">+20.1% from last month</p> */}
-          </CardContent>
-        </Card>
-        <Card className="bg-gradient-to-br from-primary-700 to-primary-400 text-primary-foreground shadow-md">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Paid Orders</CardTitle>
-            <BarChart3 className="h-4 w-4" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{paidOrders || 0}</div>
-            {/* <p className="text-xs text-secondary-100">+20.1% from last month</p> */}
-          </CardContent>
-        </Card>
-        <Card className="bg-gradient-to-br from-primary-700 to-primary-400 text-primary-foreground shadow-md">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Pending Orders
-            </CardTitle>
-            <BarChart3 className="h-4 w-4" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{pendingOrders || 0}</div>
-            {/* <p className="text-xs text-secondary-100">+20.1% from last month</p> */}
-          </CardContent>
-        </Card>
-        <Card className="bg-gradient-to-br from-primary-700 to-primary-400 text-primary-foreground shadow-md">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-            <BarChart3 className="h-4 w-4" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">$45,231.89</div>
-            <p className="text-xs text-secondary-100">+20.1% from last month</p>
           </CardContent>
         </Card>
       </div>

@@ -29,6 +29,10 @@ import { useCartStore } from "@/store";
 import { useRouter } from "next/navigation";
 
 export const createOrderSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  device: z.string().min(1, "Device is required"),
+  imei: z.string().min(1, "IMEI is required"),
+  address: z.string().min(1, "Address is required"),
   email: z
     .string()
     .email({

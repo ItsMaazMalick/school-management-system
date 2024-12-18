@@ -8,6 +8,7 @@ import {
 import { Input } from "../ui/input";
 
 type TextInputProps = {
+  hideLabel?: boolean;
   label: string;
   control: any;
   name: string;
@@ -18,6 +19,7 @@ type TextInputProps = {
 };
 
 export default function TextInput({
+  hideLabel,
   label,
   control,
   name,
@@ -32,7 +34,7 @@ export default function TextInput({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
+          {!hideLabel && <FormLabel>{label}</FormLabel>}
           <FormControl>
             <Input
               autoFocus={autoFocus}

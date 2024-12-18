@@ -8,12 +8,33 @@ export type ProductType =
   | "battery"
   | "charging";
 
+type PreDeviceCondition = "null" | "true" | "false";
+
 export type CartItem = {
   id: number;
   name: string;
   price: number;
   quantity: number;
   type: ProductType;
+  imei?: String;
+  assignedTo?: String;
+  securityCode?: String;
+  customerComments?: String;
+  staffComments?: String;
+  dueOn?: Date;
+  powerButton?: PreDeviceCondition;
+  touchFunctionality?: PreDeviceCondition;
+  waterDamage?: PreDeviceCondition;
+  backIsBroke?: PreDeviceCondition;
+  laptopBatteryCheckUp?: PreDeviceCondition;
+  volumeButton?: PreDeviceCondition;
+  proximitySensor?: PreDeviceCondition;
+  testCondition?: PreDeviceCondition;
+  noBattery?: PreDeviceCondition;
+  muteSwitch?: PreDeviceCondition;
+  homeButton?: PreDeviceCondition;
+  scratches?: PreDeviceCondition;
+  laptopCheckup?: PreDeviceCondition;
 };
 
 interface CartStore {

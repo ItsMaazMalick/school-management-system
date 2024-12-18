@@ -2,24 +2,21 @@
 
 import prisma from "@/lib/db";
 import { sendEmail } from "@/lib/send-email";
-import { ProductType } from "@/store";
+import { CartItem, ProductType } from "@/store";
 import { error } from "console";
 import { revalidatePath } from "next/cache";
 
-interface CartItem {
-  id: number; // Or number if the product ID is numeric
+type CreateOrderValues = {
   name: string;
-  price: number;
-  quantity: number;
-  type: ProductType;
-}
-
-interface CreateOrderValues {
+  device: string;
+  imei: string;
+  address: string;
   contactNumber: string;
   email?: string; // Optional email
   trxId?: string; // Optional transaction ID
+
   cartItems: CartItem[];
-}
+};
 
 export async function createOrder(values: CreateOrderValues) {
   try {
@@ -36,10 +33,14 @@ export async function createOrder(values: CreateOrderValues) {
 
     const result = await prisma.order.create({
       data: {
+        name: values.name,
         contactNumber: values.contactNumber,
         email: values.email,
         trxId: values.trxId,
         price: totalPrice,
+        address: values.address,
+        device: values.device,
+        imei: values.imei,
         orderStatus: "pending",
       },
     });
@@ -68,7 +69,7 @@ export async function createOrder(values: CreateOrderValues) {
         `Created ${orderItems.length} order items for mobile products.`
       );
     }
-
+    console.log(services[0]);
     // 7. Create order services for repair services
     if (services.length > 0) {
       await prisma.orderServicesItem.createMany({
@@ -77,6 +78,27 @@ export async function createOrder(values: CreateOrderValues) {
           quantity: item.quantity,
           //   price: item.price,
           repairServicesId: item.id,
+          assignedTo: item.serviceDetails.assignedTo,
+          customerComments: item.serviceDetails.customerComments,
+          staffComments: item.serviceDetails.staffComments,
+          dueOn: new Date(item.serviceDetails.dueOn),
+          imei: item.serviceDetails.imei,
+          price: item.price,
+          securityCode: item.serviceDetails.securityCode,
+          powerButton: item.serviceDetails.conditions.powerButton,
+          touchFunctionality: item.serviceDetails.conditions.touchFunctionality,
+          waterDamage: item.serviceDetails.conditions.waterDamage,
+          backIsBroke: item.serviceDetails.conditions.backIsBroke,
+          laptopBatteryCheckUp:
+            item.serviceDetails.conditions.laptopBatteryCheckUp,
+          volumeButton: item.serviceDetails.conditions.volumeButton,
+          proximitySensor: item.serviceDetails.conditions.proximitySensor,
+          testCondition: item.serviceDetails.conditions.testCondition,
+          noBattery: item.serviceDetails.conditions.noBattery,
+          muteSwitch: item.serviceDetails.conditions.muteSwitch,
+          homeButton: item.serviceDetails.conditions.homeButton,
+          scratches: item.serviceDetails.conditions.scratches,
+          laptopCheckup: item.serviceDetails.conditions.laptopCheckup,
         })),
       });
       console.log(
@@ -86,9 +108,13 @@ export async function createOrder(values: CreateOrderValues) {
     if (values.email) {
       const res = await sendEmail({ email: values.email, data: { ...values } });
     }
-    const order = await prisma.order.findUnique({ where: { id: result.id } });
+    const order = await prisma.order.findUnique({
+      where: { id: result.id },
+    });
+
     return { success: "Order created...", order };
-  } catch {
+  } catch (error) {
+    console.log(error);
     return { error: "Something went wrong" };
   }
 }
@@ -96,6 +122,28 @@ export async function createOrder(values: CreateOrderValues) {
 export async function getAllOrders() {
   try {
     const orders = await prisma.order.findMany();
+    return orders;
+  } catch {
+    return null;
+  }
+}
+
+export async function getPendingOrders() {
+  try {
+    const orders = await prisma.order.findMany({
+      where: { orderStatus: "pending" },
+    });
+    return orders;
+  } catch {
+    return null;
+  }
+}
+
+export async function getPaidOrders() {
+  try {
+    const orders = await prisma.order.findMany({
+      where: { orderStatus: "paid" },
+    });
     return orders;
   } catch {
     return null;

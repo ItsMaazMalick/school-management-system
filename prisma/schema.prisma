@@ -116,6 +116,10 @@ model Variant {
 
 model Order {
   id                String              @id @default(auto()) @map("_id") @db.ObjectId
+  name              String
+  device            String
+  imei              String
+  address           String
   contactNumber     String
   email             String?
   trxId             String?
@@ -141,14 +145,32 @@ model OrderItem {
 }
 
 model OrderServicesItem {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-
-  orderId  String @db.ObjectId
-  order    Order  @relation(fields: [orderId], references: [id])
-  quantity Int
-
-  repairServices   RepairServices @relation(fields: [repairServicesId], references: [id])
-  repairServicesId String         @db.ObjectId
+  id                   String             @id @default(auto()) @map("_id") @db.ObjectId
+  orderId              String             @db.ObjectId
+  order                Order              @relation(fields: [orderId], references: [id])
+  quantity             Int
+  imei                 String
+  assignedTo           String
+  securityCode         String
+  customerComments     String
+  staffComments        String
+  price                Float
+  dueOn                DateTime
+  powerButton          PreDeviceCondition @default(null)
+  touchFunctionality   PreDeviceCondition @default(null)
+  waterDamage          PreDeviceCondition @default(null)
+  backIsBroke          PreDeviceCondition @default(null)
+  laptopBatteryCheckUp PreDeviceCondition @default(null)
+  volumeButton         PreDeviceCondition @default(null)
+  proximitySensor      PreDeviceCondition @default(null)
+  testCondition        PreDeviceCondition @default(null)
+  noBattery            PreDeviceCondition @default(null)
+  muteSwitch           PreDeviceCondition @default(null)
+  homeButton           PreDeviceCondition @default(null)
+  scratches            PreDeviceCondition @default(null)
+  laptopCheckup        PreDeviceCondition @default(null)
+  repairServices       RepairServices     @relation(fields: [repairServicesId], references: [id])
+  repairServicesId     String             @db.ObjectId
 
   @@map("orderservicesitems")
 }
@@ -168,4 +190,10 @@ enum RepairService {
   battery
   charging
   service
+}
+
+enum PreDeviceCondition {
+  null
+  true
+  false
 }
