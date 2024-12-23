@@ -29,12 +29,9 @@ export default async function DashboardPage() {
   const ordersLength = await totalOrdersLength();
   const pendingOrders = await getPendingOrdersLength();
   const paidOrders = await getPaidOrdersLength();
-  const brands = await getALLRepairingBrandsWithProduct();
-  const safeBrands = brands ?? [];
 
   return (
     <>
-      <RepairingPos brands={safeBrands} />
       {/* TOP CARDS */}
       <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 p-4 gap-4">
         <Link href="/dashboard/orders">

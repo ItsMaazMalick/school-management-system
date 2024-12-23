@@ -4,7 +4,9 @@ import { decryptString } from "./lib/encryption";
 
 export function middleware(request: NextRequest) {
   const token = request.cookies.get("token")?.value;
-  const isAuthPage = request.nextUrl.pathname.startsWith("/dashboard");
+  const isAuthPage =
+    request.nextUrl.pathname.startsWith("/dashboard") ||
+    request.nextUrl.pathname.startsWith("/pos");
 
   if (!token && !isAuthPage) {
     // Redirect to login if not authenticated
@@ -26,5 +28,5 @@ export function middleware(request: NextRequest) {
 
 // Apply middleware to specific routes
 export const config = {
-  matcher: ["/dashboard/:path*"],
+  matcher: ["/dashboard/:path*", "/pos"],
 };

@@ -156,6 +156,7 @@ model OrderServicesItem {
   staffComments        String
   price                Float
   dueOn                DateTime
+  jobStatus            JobStatus          @default(pending)
   powerButton          PreDeviceCondition @default(null)
   touchFunctionality   PreDeviceCondition @default(null)
   waterDamage          PreDeviceCondition @default(null)
@@ -183,6 +184,11 @@ enum Role {
 enum OrderStatus {
   pending
   paid
+}
+
+enum JobStatus {
+  pending
+  completed
 }
 
 enum RepairService {
