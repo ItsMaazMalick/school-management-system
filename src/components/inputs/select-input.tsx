@@ -22,6 +22,7 @@ type SelectInputProps = {
     name: string;
     id: string;
   }[];
+  onValueChange?: (value: string) => void;
 };
 
 export default function SelectInput({
@@ -29,6 +30,7 @@ export default function SelectInput({
   control,
   name,
   items,
+  onValueChange,
 }: SelectInputProps) {
   return (
     <FormField
@@ -38,8 +40,13 @@ export default function SelectInput({
         <FormItem>
           <FormLabel>{label}</FormLabel>
           <Select
-            onValueChange={field.onChange}
-            //   defaultValue={field.value}
+            onValueChange={(value) => {
+              field.onChange(value);
+              if (onValueChange) {
+                onValueChange(value);
+              }
+            }}
+            defaultValue={field.value}
           >
             <FormControl>
               <SelectTrigger>
@@ -47,7 +54,7 @@ export default function SelectInput({
               </SelectTrigger>
             </FormControl>
             <SelectContent>
-              {items.map(
+              {items?.map(
                 (item: { name: string; id: string }, index: number) => (
                   <SelectItem key={index} value={item.id}>
                     {item.name}

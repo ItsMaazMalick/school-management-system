@@ -953,6 +953,12 @@ export function PosBrands({ brands }: { brands: RepairBrand[] }) {
       </div>
       <div className="absolute bottom-4 right-4 flex items-center gap-2">
         <Link
+          href="/dashboard"
+          className="p-2 bg-primary-600 text-white rounded-md"
+        >
+          Dashboard
+        </Link>
+        <Link
           href="/dashboard/orders"
           className="p-2 bg-primary-600 text-white rounded-md"
         >

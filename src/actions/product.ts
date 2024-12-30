@@ -22,10 +22,14 @@ export const addProduct = async (
     if (existingProductWithSlug) {
       return { error: "Product already exists" };
     }
-    await prisma.product.create({
+    const product = await prisma.product.create({
       data: {
         name: validData.data.name,
         slug,
+
+        imei: validData.data.imei,
+        carrierStatus: validData.data.carrierStatus,
+        boughtPrice: validData.data.boughtPrice,
         price: validData.data.price,
         image,
         description: validData.data.description,
@@ -37,6 +41,7 @@ export const addProduct = async (
         },
       },
     });
+    console.log(product);
     return { success: "Product added" };
   } catch {
     return { error: "Internal server error" };
@@ -60,6 +65,9 @@ export const updateProduct = async (
       data: {
         name: validData.data.name,
         slug,
+        imei: validData.data.imei,
+        carrierStatus: validData.data.carrierStatus,
+        boughtPrice: validData.data.boughtPrice,
         price: validData.data.price,
         image: image ?? product.image,
         description: validData.data.description,

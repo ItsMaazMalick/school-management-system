@@ -77,7 +77,7 @@ export function Sidebar() {
                 className="w-full justify-start text-white"
               >
                 <Package className="mr-2 h-4 w-4" />
-                Add Category
+                Add Brand
               </Button>
             </Link>
           </li>
@@ -103,7 +103,7 @@ export function Sidebar() {
               </Button>
             </Link>
           </li>
-          <li className="mb-4">
+          {/* <li className="mb-4">
             <Link href="/dashboard/add-glass">
               <Button
                 variant="ghost"
@@ -113,8 +113,8 @@ export function Sidebar() {
                 Add Glass
               </Button>
             </Link>
-          </li>
-          <li className="mb-4">
+          </li> */}
+          {/* <li className="mb-4">
             <Link href="/dashboard/add-screen">
               <Button
                 variant="ghost"
@@ -124,7 +124,7 @@ export function Sidebar() {
                 Add Screen
               </Button>
             </Link>
-          </li>
+          </li> */}
         </ul>
       </nav>
     </aside>

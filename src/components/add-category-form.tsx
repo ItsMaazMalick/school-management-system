@@ -8,6 +8,8 @@ import { addCategorySchema } from "@/lib/schemas/category-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import SelectInput from "./inputs/select-input";
+import { brandNames } from "@/constants/data";
 
 export function AddCategoryForm() {
   // 1. Define your form.
@@ -27,15 +29,21 @@ export function AddCategoryForm() {
     <div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="">
-          <TextInput
-            label="Category Name"
+          <SelectInput
+            label={"Select Brand"}
+            name="name"
+            control={form.control}
+            items={brandNames}
+          />
+          {/* <TextInput
+            label="Brand Name"
             name="name"
             autoFocus
             control={form.control}
-          />
+          /> */}
           <div className="flex justify-center my-4">
             <FormSubmitButton
-              title="Add Category"
+              title="Add Brand"
               loading={form.formState.isSubmitting}
               className="w-fit"
             />

@@ -9,6 +9,7 @@ import TextInput from "@/components/inputs/text-input";
 import { Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { brands } from "@/constants/data";
 import { addProductSchema } from "@/lib/schemas/product-schema";
 import { UploadButton } from "@/lib/uploadthing";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,12 +20,16 @@ import { z } from "zod";
 
 export function AddProductForm({ categories, product }: any) {
   const [image, setImage] = useState<string | undefined>();
+  const [products, setProducts] = useState<any>([]);
   // 1. Define your form.
   const form = useForm<z.infer<typeof addProductSchema>>({
     resolver: zodResolver(addProductSchema),
     defaultValues: {
       category: product?.categoryId || "",
       name: product?.name || "",
+      imei: product?.imei || "",
+      carrierStatus: product?.carrierStatus || "",
+      boughtPrice: product?.boughtPrice || 0,
       price: product?.price || 0,
       description: product?.description || "",
       storage: product?.storage || "",
@@ -42,27 +47,71 @@ export function AddProductForm({ categories, product }: any) {
       const response = await addProduct(values, image);
     }
   }
+
+  const handleCategoryChange = async (categoryId: string) => {
+    const category = categories.find(
+      (cat: { id: string }) => cat.id === categoryId
+    );
+    const filteredProducts = brands.filter(
+      (brand) => brand.brand.toLowerCase() === category.name.toLowerCase()
+    );
+    console.log(filteredProducts);
+
+    setProducts(filteredProducts[0]?.models);
+  };
+
   return (
     <div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
             <SelectInput
-              label={product ? product.category?.name : "Category"}
+              label={product ? product.category?.name : "Select Brand"}
               name="category"
               control={form.control}
               items={categories}
+              onValueChange={handleCategoryChange}
             />
-            <TextInput
+            <SelectInput
+              label={product ? product?.name : "Select Product"}
+              name="name"
+              control={form.control}
+              items={products}
+            />
+            {/* <TextInput
               label="Product Name"
               name="name"
               autoFocus
               control={form.control}
+            /> */}
+            <TextInput
+              label="IMEI"
+              name="imei"
+              autoFocus
+              control={form.control}
             />
             <TextInput
-              label="Product Price"
+              label="Carrier Status"
+              name="carrierStatus"
+              autoFocus
+              control={form.control}
+            />
+            <TextInput
+              label="Bought Price"
+              name="boughtPrice"
+              type="number"
+              control={form.control}
+            />
+            <TextInput
+              label="Selling Price"
               name="price"
               type="number"
+              control={form.control}
+            />
+
+            <TextInput
+              label="Storage Capacity"
+              name="storage"
               control={form.control}
             />
 
@@ -106,8 +155,6 @@ export function AddProductForm({ categories, product }: any) {
                 )
               )}
             </div>
-
-            <TextInput label="Storage" name="storage" control={form.control} />
           </div>
           <div className="p-4">
             <TextAreaInput
