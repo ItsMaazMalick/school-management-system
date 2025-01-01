@@ -6,14 +6,20 @@ import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { PosBrands, RepairBrand } from "./pos-brands";
 import { useRouter } from "next/navigation";
+import { getALLRepairingBrandsWithProduct } from "@/actions/service";
 
-export function RepairingPos({ brands }: { brands: RepairBrand[] }) {
+export function RepairingPos() {
   const [clientTotalPrice, setClientTotalPrice] = useState<number>(0); // State to store total price
-
+  const [brands, setBrands] = useState<RepairBrand[]>([]);
   const router = useRouter();
 
   useEffect(() => {
-    router.refresh();
+    const getData = async () => {
+      const brands = await getALLRepairingBrandsWithProduct();
+      const safeBrands = brands ?? [];
+      setBrands(safeBrands);
+    };
+    getData();
   }, []);
 
   const {
