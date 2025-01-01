@@ -88,7 +88,7 @@ export function Sidebar() {
                 className="w-full justify-start text-white"
               >
                 <Package className="mr-2 h-4 w-4" />
-                Add Product
+                Inventory
               </Button>
             </Link>
           </li>

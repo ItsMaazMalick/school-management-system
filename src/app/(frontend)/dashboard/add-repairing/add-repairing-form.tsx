@@ -38,6 +38,9 @@ export function AddRepairingForm({ brands }: { brands: RepairBrand[] }) {
   const [servicePrices, setServicePrices] = useState<{ [key: number]: number }>(
     {}
   );
+  const [serviceStock, setServiceStock] = useState<{ [key: number]: number }>(
+    {}
+  );
 
   // Handle brand click
   const handleBrandClick = (brand: RepairBrand) => {
@@ -80,6 +83,13 @@ export function AddRepairingForm({ brands }: { brands: RepairBrand[] }) {
     }));
   };
 
+  const handleStockChange = (serviceId: number, stock: number) => {
+    setServiceStock((prevStock) => ({
+      ...prevStock,
+      [serviceId]: stock,
+    }));
+  };
+
   // Handle form submission (for demo purposes)
   const handleSubmit = async () => {
     if (selectedProduct && selectedBrand && selectedCategory) {
@@ -97,6 +107,7 @@ export function AddRepairingForm({ brands }: { brands: RepairBrand[] }) {
             productId: selectedProduct.id,
             service: service, // We know it's defined now
             price: servicePrices[serviceId],
+            inStock: serviceStock[serviceId],
           };
         })
         .filter((serviceData) => serviceData !== null);
@@ -209,7 +220,7 @@ export function AddRepairingForm({ brands }: { brands: RepairBrand[] }) {
             {services.map((service) => (
               <div
                 key={service.id}
-                className="flex items-center space-x-2 cursor-pointer"
+                className="flex flex-col items-center space-x-2 cursor-pointer"
               >
                 <input
                   type="checkbox"
@@ -224,15 +235,32 @@ export function AddRepairingForm({ brands }: { brands: RepairBrand[] }) {
                   {service.name}
                 </label>
                 {selectedServices.includes(service.id) && (
-                  <input
-                    type="number"
-                    className="block ml-4 p-2 border rounded-md"
-                    placeholder="Price"
-                    value={servicePrices[service.id] || ""}
-                    onChange={(e) =>
-                      handlePriceChange(service.id, parseFloat(e.target.value))
-                    }
-                  />
+                  <>
+                    <input
+                      type="number"
+                      className="block ml-4 p-2 border rounded-md"
+                      placeholder="Price"
+                      value={servicePrices[service.id] || ""}
+                      onChange={(e) =>
+                        handlePriceChange(
+                          service.id,
+                          parseFloat(e.target.value)
+                        )
+                      }
+                    />
+                    <input
+                      type="number"
+                      className="block ml-4 p-2 border rounded-md"
+                      placeholder="Stock"
+                      value={serviceStock[service.id] || ""}
+                      onChange={(e) =>
+                        handleStockChange(
+                          service.id,
+                          parseFloat(e.target.value)
+                        )
+                      }
+                    />
+                  </>
                 )}
               </div>
             ))}

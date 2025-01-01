@@ -152,7 +152,8 @@ export function PosBrands({ brands }: { brands: RepairBrand[] }) {
 
   const handleAddToCart = (
     item: any,
-    type: "mobile" | "service" | "screen" | "battery" | "charging"
+    type: "mobile" | "service" | "screen" | "battery" | "charging",
+    quantity: number = 1
   ) => {
     // Create a new cart item with the selected service and last step values
     const cartItem = {
@@ -160,6 +161,7 @@ export function PosBrands({ brands }: { brands: RepairBrand[] }) {
       name: `${type !== "mobile" && `${selectedProduct?.name} - `}${item.name}`,
       price: item.price,
       type: type,
+      quantity: quantity,
       serviceDetails: {
         imei: lastStepValues.imei,
         assignedTo: lastStepValues.assignedTo,
@@ -755,6 +757,7 @@ export function PosBrands({ brands }: { brands: RepairBrand[] }) {
                       }
                     />
                   </div>
+
                   <Button
                     className="w-full"
                     onClick={() => {

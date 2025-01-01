@@ -16,6 +16,7 @@ export const addService = async ({
     productId: string;
     service: { name: string; type: string };
     price: number;
+    inStock: number;
   }[]; // serviceId and price from the front end
 }) => {
   try {
@@ -31,6 +32,7 @@ export const addService = async ({
       data: services.map((service) => ({
         name: service.service.name,
         price: service.price,
+        inStock: service.inStock,
         type:
           service.service.type === "screen"
             ? "screen"

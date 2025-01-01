@@ -16,6 +16,7 @@ export type CartItem = {
   price: number;
   quantity: number;
   type: ProductType;
+  productId?: string;
   imei?: String;
   assignedTo?: String;
   securityCode?: String;

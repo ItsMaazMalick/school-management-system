@@ -105,6 +105,22 @@ export async function createOrder(values: CreateOrderValues) {
         `Created ${services.length} order services for repair services.`
       );
     }
+
+    // Decrease the quantity of repairProduct for each service
+    if (services.length > 0) {
+      for (const service of services) {
+        await prisma.repairServices.update({
+          where: { id: String(service.id) },
+          data: {
+            inStock: {
+              decrement: service.quantity,
+            },
+          },
+        });
+      }
+      console.log(`Updated quantities for ${services.length} repair products.`);
+    }
+
     if (values.email) {
       const res = await sendEmail({ email: values.email, data: { ...values } });
     }
@@ -153,6 +169,7 @@ export async function getPaidOrders() {
 export async function getLast10Orders() {
   try {
     const orders = await prisma.order.findMany({
+      where: { orderStatus: "pending" },
       take: 10,
       orderBy: {
         createdAt: "desc",
