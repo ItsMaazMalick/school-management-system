@@ -1,38 +1,10 @@
 "use client";
 
-import { useCartStore } from "@/store";
-import { PosBrands, RepairBrand } from "./pos-brands";
-import { Cross, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { useEffect, useState, useTransition } from "react";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { addBrand } from "@/actions/brand";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { createOrder } from "@/actions/order";
-import FormSubmitButton from "@/components/form-submit-button";
-import { useRouter } from "next/navigation";
-import { createOrderSchema } from "@/app/checkout/checkout";
-import TextInput from "@/components/inputs/text-input";
+import { useCartStore } from "@/store";
+import { X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { PosBrands, RepairBrand } from "./pos-brands";
 
 export function RepairingPos({ brands }: { brands: RepairBrand[] }) {
   const [clientTotalPrice, setClientTotalPrice] = useState<number>(0); // State to store total price

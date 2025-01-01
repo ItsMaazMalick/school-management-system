@@ -33,6 +33,7 @@ import { createOrder } from "@/actions/order";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 // Define shared types for the product and service
 export interface RepairService {
@@ -86,6 +87,7 @@ interface LastStepValues {
 
 export function PosBrands({ brands }: { brands: RepairBrand[] }) {
   // States to store the selected brand, category, product, and cart
+  const router = useRouter();
   const [selectedBrand, setSelectedBrand] = useState<RepairBrand | null>(null);
   const [selectedCategory, setSelectedCategory] =
     useState<RepairCategory | null>(null);
@@ -99,6 +101,7 @@ export function PosBrands({ brands }: { brands: RepairBrand[] }) {
   const [lastStep, setLastStep] = useState(false);
   const [customerModal, setCustomerModal] = useState(false);
   const [selectedService, setSelectedService] = useState<any>(null);
+
   const [lastStepValues, setLastStepValues] = useState<LastStepValues>({
     imei: "",
     assignedTo: "",
@@ -201,6 +204,7 @@ export function PosBrands({ brands }: { brands: RepairBrand[] }) {
     startTransition(async () => {
       await addBrand({ name: newBrandName });
     });
+    router.refresh();
   };
   const handleAddCategory = async () => {
     if (!newCategoryName) {
@@ -212,6 +216,7 @@ export function PosBrands({ brands }: { brands: RepairBrand[] }) {
         name: newCategoryName,
       });
     });
+    router.refresh();
   };
   const handleAddProduct = async () => {
     if (!newProductName) {
@@ -223,6 +228,7 @@ export function PosBrands({ brands }: { brands: RepairBrand[] }) {
         name: newProductName,
       });
     });
+    router.refresh();
   };
 
   const handlePreDeviceToggle = (key: keyof LastStepValues) => {
