@@ -5,9 +5,16 @@ import { useCartStore } from "@/store";
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { PosBrands, RepairBrand } from "./pos-brands";
+import { useRouter } from "next/navigation";
 
 export function RepairingPos({ brands }: { brands: RepairBrand[] }) {
   const [clientTotalPrice, setClientTotalPrice] = useState<number>(0); // State to store total price
+
+  const router = useRouter();
+
+  useEffect(() => {
+    router.refresh();
+  }, []);
 
   const {
     items,

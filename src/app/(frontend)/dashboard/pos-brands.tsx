@@ -6,7 +6,7 @@ import { Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useCartStore } from "@/store";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import DeviceConditionRadioGroup from "./DeviceConditionRadioGroup";
 import {
@@ -101,6 +101,10 @@ export function PosBrands({ brands }: { brands: RepairBrand[] }) {
   const [lastStep, setLastStep] = useState(false);
   const [customerModal, setCustomerModal] = useState(false);
   const [selectedService, setSelectedService] = useState<any>(null);
+
+  useEffect(() => {
+    router.refresh();
+  }, []);
 
   const [lastStepValues, setLastStepValues] = useState<LastStepValues>({
     imei: "",

@@ -6,9 +6,5 @@ export default async function POS() {
   const brands = await getALLRepairingBrandsWithProduct();
   const safeBrands = brands ?? [];
 
-  return (
-    <Suspense fallback={<p>Loading...</p>}>
-      <RepairingPos brands={safeBrands} />
-    </Suspense>
-  );
+  return <RepairingPos brands={safeBrands} />;
 }
