@@ -10,7 +10,7 @@ export async function addBrand({ name }: { name: string }) {
         name,
       },
     });
-    revalidatePath("/dashboard");
+    revalidatePath("/dashboard/pos");
     return { success: "Brand Created successfully" };
   } catch {
     return { error: "Error creating brand" };
@@ -41,7 +41,7 @@ export async function addBrandCategory({
         },
       },
     });
-    revalidatePath("/dashboard");
+    revalidatePath("/dashboard/pos");
     return { success: "Category Created successfully" };
   } catch {
     return { error: "Error creating category" };
@@ -72,7 +72,7 @@ export async function addBrandProduct({
         },
       },
     });
-    revalidatePath("/dashboard");
+    revalidatePath("/dashboard/pos");
     return { success: "Product Created successfully" };
   } catch {
     return { error: "Error creating category" };
