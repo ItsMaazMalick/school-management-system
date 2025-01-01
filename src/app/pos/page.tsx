@@ -1,12 +1,14 @@
 import { getALLRepairingBrandsWithProduct } from "@/actions/service";
 import { RepairingPos } from "../(frontend)/dashboard/repairing-pos";
+import { Suspense } from "react";
 
 export default async function POS() {
   const brands = await getALLRepairingBrandsWithProduct();
   const safeBrands = brands ?? [];
+
   return (
-    <div>
+    <Suspense fallback={<p>Loading...</p>}>
       <RepairingPos brands={safeBrands} />
-    </div>
+    </Suspense>
   );
 }
