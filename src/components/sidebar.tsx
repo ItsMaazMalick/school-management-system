@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { LayoutDashboard, ShoppingCart, Package, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 export function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,7 +14,16 @@ export function Sidebar() {
       } md:block`}
     >
       <nav>
-        <h2 className="text-2xl font-semibold mb-6">MobileShop</h2>
+        <div className="mb-6">
+          <Image
+            src="/images/logo.png"
+            alt="Empire Repair Shop"
+            width={1000}
+            height={1000}
+            className="w-16 mx-auto"
+          />
+          {/* <h2 className="text-2xl font-semibold ">Empire</h2> */}
+        </div>
         <ul>
           <li className="mb-4">
             <Link href="/dashboard">
@@ -88,7 +98,7 @@ export function Sidebar() {
                 className="w-full justify-start text-white"
               >
                 <Package className="mr-2 h-4 w-4" />
-                Inventory
+                Add Product
               </Button>
             </Link>
           </li>
@@ -99,7 +109,7 @@ export function Sidebar() {
                 className="w-full justify-start text-white"
               >
                 <Package className="mr-2 h-4 w-4" />
-                Add Repairing
+                Add Inventory
               </Button>
             </Link>
           </li>
